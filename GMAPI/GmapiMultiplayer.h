@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiMultiplayer.h
-  - Wrapped GM functions; Parser-generated code
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiMultiplayer.h                                                  */
+/*   - Wrapped GM functions; Parser-generated code                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #pragma once
 #include "GmapiInternal.h"
@@ -38,7 +38,7 @@ namespace gm {
   void mplay_end();
   CGMVariable mplay_ipaddress();
 
-  bool mplay_session_create( const CGMVariable& sesname, int playnumb, 
+  bool mplay_session_create( const CGMVariable& sesname, int playnumb,
                              const CGMVariable& playername );
   int mplay_session_find();
   CGMVariable mplay_session_name( int numb );
@@ -66,4 +66,4 @@ namespace gm {
   int mplay_message_count( const CGMVariable& player );
   void mplay_message_clear( const CGMVariable& player );
 
-};
+}

@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiGameplay.cpp
-  - Wrapped GM functions; Parser-generated code
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiGameplay.cpp                                                   */
+/*   - Wrapped GM functions; Parser-generated code                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #include "GmapiGameplay.h"
 #include "GmapiMacros.h"
@@ -162,7 +162,7 @@ namespace gm {
     GM_RETURN_BOOL;
   }
 
-  void path_start( int path, double speed, int endaction, 
+  void path_start( int path, double speed, int endaction,
                    bool absolute ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ path, speed, endaction, absolute };
@@ -716,7 +716,7 @@ namespace gm {
     GM_NORMAL_CALL( id_variable_global_set );
   }
 
-  void variable_global_array_set( const CGMVariable& name, int ind, 
+  void variable_global_array_set( const CGMVariable& name, int ind,
                                   const CGMVariable& value ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ name, ind, value };
@@ -724,7 +724,7 @@ namespace gm {
     GM_NORMAL_CALL( id_variable_global_array_set );
   }
 
-  void variable_global_array2_set( const CGMVariable& name, int ind1, 
+  void variable_global_array2_set( const CGMVariable& name, int ind1,
                                    int ind2, const CGMVariable& value ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ name, ind1, ind2, value };
@@ -739,7 +739,7 @@ namespace gm {
     GM_NORMAL_CALL( id_variable_local_set );
   }
 
-  void variable_local_array_set( const CGMVariable& name, int ind, 
+  void variable_local_array_set( const CGMVariable& name, int ind,
                                  const CGMVariable& value ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ name, ind, value };
@@ -747,7 +747,7 @@ namespace gm {
     GM_NORMAL_CALL( id_variable_local_array_set );
   }
 
-  void variable_local_array2_set( const CGMVariable& name, int ind1, 
+  void variable_local_array2_set( const CGMVariable& name, int ind1,
                                   int ind2, const CGMVariable& value ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ name, ind1, ind2, value };

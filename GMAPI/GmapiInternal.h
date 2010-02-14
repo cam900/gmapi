@@ -1,30 +1,35 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiInternal.h
-  - Declarations of all GMAPI components, excluding wrapped GM functions
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiInternal.h                                                     */
+/*  - Declarations of GMAPI classes and interfaces                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #pragma once
+
+#ifdef __GNUC__
+  #define sprintf_s snprintf
+#endif
+
 #include <windows.h>
 
 #include <string>
@@ -36,15 +41,21 @@
 
 namespace gm {
   /// Used internally
-  class CGlobals { 
+  class CGlobals {
     friend class CGMAPI;
 
     public:
-      static __forceinline bool UseNewStructs() {
+      static inline bool UseNewStructs() {
         return m_alternativeStructures;
       }
 
+
     private:
+      static inline PGMVARIABLELIST InstanceVarList( PGMINSTANCE aInstance );
+      static inline int InstanceID( PGMINSTANCE aInstance );
+      static inline int InstanceObjectID( PGMINSTANCE aInstance );
+      static inline bool IsInstanceDeactivated( PGMINSTANCE aInstance );
+
       static bool m_alternativeStructures;
   };
 
@@ -62,55 +73,55 @@ namespace gm {
   class CGMVariable {
     public:
       /// Ctor( int aValue ) [default]
-      ///   Initializes the variable to specified int value 
+      ///   Initializes the variable to specified int value
       ///   (it will be casted to double) and sets its type
       ///   to "real".
       ///
       /// Parameters:
-      ///   aValue: [optional] Initializing value. 
+      ///   aValue: [optional] Initializing value.
       ///
-      CGMVariable( int aValue = 0 ): m_real( aValue ),
-                                     m_isString( false ),
+      CGMVariable( int aValue = 0 ): m_isString( false ),
+                                     m_stringDispose( true ),
                                      m_stringPtr( NULL ),
-                                     m_stringDispose( true ) {}
+                                     m_real( aValue ) {}
 
       /// Ctor( double aValue )
-      ///   Initializes the variable to specified value 
+      ///   Initializes the variable to specified value
       ///   and sets its type to "real".
       ///
       /// Parameters:
       ///   aValue: Initializing value.
       ///
-      CGMVariable( double aValue ): m_real( aValue ),
-                                    m_isString( false ),
+      CGMVariable( double aValue ): m_isString( false ),
+                                    m_stringDispose( true ),
                                     m_stringPtr( NULL ),
-                                    m_stringDispose( true ) {}
+                                    m_real( aValue ) {}
 
       /// Ctor( const char* aValue )
-      ///   Initializes the variable with specified string 
+      ///   Initializes the variable with specified string
       ///   and sets its type to "string".
       ///
       /// Parameters:
       ///   aString: Initializing string.
       ///
-      CGMVariable( const char* aString ): m_real( 0.0 ),
-                                          m_isString( true ),
+      CGMVariable( const char* aString ): m_isString( true ),
+                                          m_stringDispose( true ),
                                           m_stringPtr( NULL ),
-                                          m_stringDispose( true ) {
+                                          m_real( 0.0 ) {
         StringSet( aString );
       }
 
       /// Ctor( const std::string& aValue )
-      ///   Initializes the variable with specified string 
+      ///   Initializes the variable with specified string
       ///   and sets its type to "string".
       ///
       /// Parameters:
       ///   aString: Initializing string.
       ///
-      CGMVariable( const std::string& aString ): m_real( 0.0 ),
-                                                 m_isString( true ),
+      CGMVariable( const std::string& aString ): m_isString( true ),
+                                                 m_stringDispose( true ),
                                                  m_stringPtr( NULL ),
-                                                 m_stringDispose( true ) {
+                                                 m_real( 0.0 ) {
         StringSet( aString.c_str() );
       }
 
@@ -127,10 +138,10 @@ namespace gm {
       ///   Copy constructor. Initializes the object basing
       ///   on an existing class instance.
       ///
-      CGMVariable( const CGMVariable& aValue ): m_real( 0.0 ),
+      CGMVariable( const CGMVariable& aValue ): m_isString( false ),
+                                                m_stringDispose( true ),
                                                 m_stringPtr( NULL ),
-                                                m_isString( false ),
-                                                m_stringDispose( true ) {
+                                                m_real( 0.0 ) {
         *this = aValue;
       }
 
@@ -138,10 +149,10 @@ namespace gm {
       /// Used internally. Initializes the object that
       /// will not deallocate the string on destruction.
       ///
-      CGMVariable( bool aDeallocateString ): m_real( 0.0 ),
-                                             m_isString( true ),
+      CGMVariable( bool aDeallocateString ): m_isString( true ),
+                                             m_stringDispose( aDeallocateString ),
                                              m_stringPtr( NULL ),
-                                             m_stringDispose( aDeallocateString ) {}
+                                             m_real( 0.0 ) {}
 
       ~CGMVariable() {
         if ( m_isString && m_stringPtr && m_stringDispose )
@@ -231,7 +242,7 @@ namespace gm {
       ///
       /// Parameters:
       ///    aValue: Floating point value to convert.
-      ///   
+      ///
       void RealToString( double aValue ) {
         char buffer[0x80];
         sprintf_s( buffer, 0x80, "%.16g", aValue );
@@ -296,12 +307,12 @@ namespace gm {
       /************************************************************************/
 
       CGMVariable& operator=( double aValue ) {
-        Set( aValue ); 
+        Set( aValue );
         return *this;
       }
 
-      CGMVariable& operator=( const char* aValue ) { 
-        Set( aValue ); 
+      CGMVariable& operator=( const char* aValue ) {
+        Set( aValue );
         return *this;
       }
 
@@ -504,7 +515,7 @@ namespace gm {
     unsigned long GetFirstDimensionSize() {
       if ( values )
         return (DWORD) values[-1];
-      
+
       return 0;
     }
 
@@ -526,7 +537,7 @@ namespace gm {
     GMVARIABLE& operator=( const char* aValue );
     GMVARIABLE& operator=( const CGMVariable& aValue );
 
-	  /// Dereferences "values" component of the structure
+    /// Dereferences "values" component of the structure
     GMVALUE* operator[]( int aIndex ) {
       return values[aIndex];
     };
@@ -545,6 +556,7 @@ namespace gm {
   ///   the structure have changed.
   ///
   struct GMINSTANCE {
+  #ifdef _MSC_VER
      __declspec( property( get = _Get_id, put = _Set_id ) ) int id;
     int& _Get_id() {
       return ( CGlobals::UseNewStructs() ? structNew.id : structOld.id );
@@ -971,6 +983,7 @@ namespace gm {
     bool& _Set_timeline_loop( bool aValue ) {
       return structNew.timeline_loop = aValue;
     }
+  #endif
 
     union {
       /// Version of the structure in GM6.1/7
@@ -1024,7 +1037,7 @@ namespace gm {
 
   class EGMAPIInvalidSubimage: public EGMAPIResourceException {
     public:
-      explicit EGMAPIInvalidSubimage( int aSprite, int aSubimage ): m_subimage( aSubimage ) { 
+      explicit EGMAPIInvalidSubimage( int aSprite, int aSubimage ): m_subimage( aSubimage ) {
         m_resourceId = aSprite;
       }
 
@@ -1499,7 +1512,7 @@ namespace gm {
       ///
       /// Parameters:
       ///   aSpriteName: Name of the sprite.
-      /// 
+      ///
       /// Returns:
       ///   Specified sprite's ID. If sprite with specified name does
       ///   not exists, then return value will be -1.
@@ -1507,11 +1520,11 @@ namespace gm {
       int GetID( const char* aSpriteName );
 
       /// Exists( int aSpriteId )
-      ///   Checks whether a specified sprite exists. 
+      ///   Checks whether a specified sprite exists.
       ///
       /// Parameters:
       ///   aSpriteId: ID of the sprite.
-      /// 
+      ///
       /// Returns:
       ///   True if the sprite exists.
       ///
@@ -1661,7 +1674,7 @@ namespace gm {
       ///
       /// Parameters:
       ///   aBackgroundName: Name of the background.
-      /// 
+      ///
       /// Returns:
       ///   Specified background's ID. If background with specified name does
       ///   not exists, then return value will be -1.
@@ -1669,11 +1682,11 @@ namespace gm {
       int GetID( const char* aBackgroundName );
 
       /// Exists( int aBackgroundId )
-      ///   Checks whether specified background exists. 
+      ///   Checks whether specified background exists.
       ///
       /// Parameters:
       ///   aBackgroundId: ID of the background.
-      /// 
+      ///
       /// Returns:
       ///   True if the background exists.
       ///
@@ -1769,11 +1782,11 @@ namespace gm {
       inline ISurface& operator[]( int aSurfaceId );
 
       /// Exists( int aSurfaceId )
-      ///   Checks whether specified surface exists. 
+      ///   Checks whether specified surface exists.
       ///
       /// Parameters:
       ///   aSurfaceId: ID of the surface.
-      /// 
+      ///
       /// Returns:
       ///   True if the surface exists.
       ///
@@ -1793,7 +1806,7 @@ namespace gm {
       /// Returns:
       ///   Number of elements in the array.
       ///
-      inline int GetArraySize();  
+      inline int GetArraySize();
 
     private:
       ISurface m_iSurface;
@@ -1867,11 +1880,11 @@ namespace gm {
       int GetCount();
 
       /// Exists( int aScriptId )
-      ///   Checks whether the specified script exists. 
+      ///   Checks whether the specified script exists.
       ///
       /// Parameters:
       ///   aScriptId: ID of the script.
-      /// 
+      ///
       /// Returns:
       ///   True if the script exists.
       ///
@@ -1882,7 +1895,7 @@ namespace gm {
       ///
       /// Parameters:
       ///   aScriptName: Name of the script.
-      /// 
+      ///
       /// Returns:
       ///   Specified script's ID. If script with specified name does
       ///   not exists, then return value will be -1.
@@ -2022,7 +2035,7 @@ namespace gm {
       ///   Pointer to memory block that contains the whole sound file.
       ///   Use GetDataSize() method to check size of the file.
       ///   Returns NULL, if the sound has no file selected or using multimedia
-      ///   player (sound type SND_MULTIMEDIA) to play the sound AND it is preloaded 
+      ///   player (sound type SND_MULTIMEDIA) to play the sound AND it is preloaded
       ///   (when it is not preloaded - the method returns valid pointer to file).
       ///
       inline unsigned char* GetData();
@@ -2076,11 +2089,11 @@ namespace gm {
       inline int GetArraySize();
 
       /// Exists( int aSoundId )
-      ///   Checks whether the specified sound exists. 
+      ///   Checks whether the specified sound exists.
       ///
       /// Parameters:
       ///   aSoundId: ID of the sound.
-      /// 
+      ///
       /// Returns:
       ///   True if the sound exists.
       ///
@@ -2091,18 +2104,18 @@ namespace gm {
       ///
       /// Parameters:
       ///   aSoundName: Name of the sound.
-      /// 
+      ///
       /// Returns:
       ///   Specified sound's ID. If sound with specified name does
       ///   not exists, then return value will be -1.
       ///
       int GetID( const char* aSoundName );
-      
+
     private:
       ISound m_iSound;
   };
 
-  
+
   /// IFont
   ///   Interface that provides simplier access to font data.
   ///   It should be accessed only from within the IFonts interface.
@@ -2122,7 +2135,7 @@ namespace gm {
 
       /// GetFontTypefaceName()
       ///   Gets name of the typeface used to create the font.
-      /// 
+      ///
       /// Returns:
       ///   Name of the typeface or NULL if the font is created from a sprite.
       ///
@@ -2130,7 +2143,7 @@ namespace gm {
 
       /// GetFontSize()
       ///   Gets size of the font.
-      /// 
+      ///
       /// Returns:
       ///   Size of the font or 0 if the font is created from a sprite.
       ///
@@ -2138,7 +2151,7 @@ namespace gm {
 
       /// GetBold()
       ///   Checks whether the font is bolded.
-      /// 
+      ///
       /// Returns:
       ///   True if the font is bolded. If the font is created from a sprite,
       ///   then function will return false.
@@ -2147,7 +2160,7 @@ namespace gm {
 
       /// GetItalic()
       ///   Checks whether the font is italicized.
-      /// 
+      ///
       /// Returns:
       ///   True if the font is italicized. If the font is created from a sprite,
       ///   then function will return false.
@@ -2156,7 +2169,7 @@ namespace gm {
 
       /// GetRangeLow()
       ///   Returns the beginning of a range of characters that font uses.
-      /// 
+      ///
       /// Returns:
       ///   Beginning of the character range.
       ///
@@ -2164,10 +2177,10 @@ namespace gm {
 
       /// GetRangeHigh()
       ///   Returns the end of a range of characters that font uses.
-      /// 
+      ///
       /// Returns:
       ///   End of the character range.
-      ///   
+      ///
       inline int GetRangeHigh();
 
       /// GetSpriteID()
@@ -2181,7 +2194,7 @@ namespace gm {
       /// GetBitmap()
       ///   Returns a pointer to the bitmap generated for the font created from a typeface.
       ///   The color format is A8 (8-bit; alpha channel only).
-      /// 
+      ///
       /// Returns:
       ///   Pointer to the bitmap or NULL if it is a font created from a sprite.
       ///
@@ -2189,7 +2202,7 @@ namespace gm {
 
       /// GetBitmapWidth()
       ///   Returns the width of the bitmap.
-      /// 
+      ///
       /// Returns:
       ///   Width of the bitmap or 0 if it is a font created from a sprite.
       ///
@@ -2197,7 +2210,7 @@ namespace gm {
 
       /// GetBitmapHeight()
       ///   Returns the height of the bitmap.
-      /// 
+      ///
       /// Returns:
       ///   Height of the bitmap or 0 if it is a font created from a sprite.
       ///
@@ -2205,7 +2218,7 @@ namespace gm {
 
       /// GetBitmapSize()
       ///   Returns the size in bytes of the bitmap.
-      /// 
+      ///
       /// Returns:
       ///   Size of the bitmap or 0 if it is a font created from a sprite.
       ///
@@ -2229,57 +2242,57 @@ namespace gm {
       ///
       inline IDirect3DTexture8* GetTexture();
 
-      /// GetCharPositionX( char aCharacter )
+      /// GetCharPositionX( unsigned char aCharacter )
       ///   Gets X position of specified character on the bitmap.
       ///
       /// Returns:
       ///   Position of the character or 0 if it is a sprite-based font.
       ///
-      inline int GetCharPositionX( char aCharacter );
+      inline int GetCharPositionX( unsigned char aCharacter );
 
-      /// GetCharPositionY( char aCharacter )
+      /// GetCharPositionY( unsigned char aCharacter )
       ///   Gets Y position of specified character on the bitmap.
       ///
       /// Returns:
       ///   Position of the character or 0 if it is a sprite-based font.
       ///
-      inline int GetCharPositionY( char aCharacter );
+      inline int GetCharPositionY( unsigned char aCharacter );
 
-      /// GetCharBoundingBoxLeft( char aCharacter )
+      /// GetCharBoundingBoxLeft( unsigned char aCharacter )
       ///   Returns offset of the left side of specified character's
-      ///   bounding box. (used in proportional fonts) 
+      ///   bounding box. (used in proportional fonts)
       ///
       /// Returns:
       ///   Offset of the left side of character's bounding box.
       ///
-      inline int GetCharBoundingBoxLeft( char aCharacter );
+      inline int GetCharBoundingBoxLeft( unsigned char aCharacter );
 
-      /// GetCharBoundingBoxRight( char aCharacter )
+      /// GetCharBoundingBoxRight( unsigned char aCharacter )
       ///   Returns offset of the right side of specified character's
-      ///   bounding box. (used in proportional fonts) 
+      ///   bounding box. (used in proportional fonts)
       ///
       /// Returns:
       ///   Offset of the right side of character's bounding box.
       ///
-      inline int GetCharBoundingBoxRight( char aCharacter );
+      inline int GetCharBoundingBoxRight( unsigned char aCharacter );
 
-      /// GetCharBoundingBoxTop( char aCharacter )
+      /// GetCharBoundingBoxTop( unsigned char aCharacter )
       ///   Returns offset of the top side of specified character's
-      ///   bounding box. (used in proportional fonts) 
+      ///   bounding box. (used in proportional fonts)
       ///
       /// Returns:
       ///   Offset of the top side of character's bounding box.
       ///
-      inline int GetCharBoundingBoxTop( char aCharacter );
+      inline int GetCharBoundingBoxTop( unsigned char aCharacter );
 
-      /// GetCharBoundingBoxBottom( char aCharacter )
+      /// GetCharBoundingBoxBottom( unsigned char aCharacter )
       ///   Returns offset of the bottom side of specified character's
-      ///   bounding box. (used in proportional fonts) 
+      ///   bounding box. (used in proportional fonts)
       ///
       /// Returns:
       ///   Offset of the bottom side of character's bounding box.
       ///
-      inline int GetCharBoundingBoxBottom( char aCharacter );
+      inline int GetCharBoundingBoxBottom( unsigned char aCharacter );
 
     private:
       static int m_fontId;
@@ -2322,11 +2335,11 @@ namespace gm {
       inline int GetArraySize();
 
       /// Exists( int aFontId )
-      ///   Checks whether the specified font exists. 
+      ///   Checks whether the specified font exists.
       ///
       /// Parameters:
       ///   aFontId: ID of the font.
-      /// 
+      ///
       /// Returns:
       ///   True if the font exists.
       ///
@@ -2337,7 +2350,7 @@ namespace gm {
       ///
       /// Parameters:
       ///   aFontName: Name of the font.
-      /// 
+      ///
       /// Returns:
       ///   Specified font's ID. If the font with specified name
       ///   doesn't exists, then return value will be -1.
@@ -2461,7 +2474,7 @@ namespace gm {
 
       /// SetDistribution( int aDistribution )
       ///   Sets the emitter's distribution.
-      /// 
+      ///
       /// Parameters:
       ///   aDistribution: New type of the distribution (gm::ps_distr_*)
       ///
@@ -2523,11 +2536,11 @@ namespace gm {
       inline int GetArraySize();
 
       /// Exists( int aEmitterId )
-      ///   Checks whether the specified emitter exists. 
+      ///   Checks whether the specified emitter exists.
       ///
       /// Parameters:
       ///   aFontId: ID of the emitter.
-      /// 
+      ///
       /// Returns:
       ///   True if the emitter exists.
       ///
@@ -2640,7 +2653,7 @@ namespace gm {
       ///   aAdditive: Specifies whether to enable or disable the property.
       ///
       inline void SetAdditive( bool aAdditive );
-      
+
     private:
       int m_attractorId;
   };
@@ -2682,11 +2695,11 @@ namespace gm {
       inline int GetArraySize();
 
       /// Exists( int aAttractorId )
-      ///   Checks whether the specified attractor exists. 
+      ///   Checks whether the specified attractor exists.
       ///
       /// Parameters:
       ///   aFontId: ID of the attractor.
-      /// 
+      ///
       /// Returns:
       ///   True if the attractor exists.
       ///
@@ -2841,16 +2854,16 @@ namespace gm {
       inline int GetArraySize();
 
       /// Exists( int aDeflectorId )
-      ///   Checks whether the specified deflector exists. 
+      ///   Checks whether the specified deflector exists.
       ///
       /// Parameters:
       ///   aFontId: ID of the deflector.
-      /// 
+      ///
       /// Returns:
       ///   True if the deflector exists.
       ///
       inline bool Exists( int aDeflectorId );
- 
+
   private:
     IDeflector m_iDeflector;
   };
@@ -2984,11 +2997,11 @@ namespace gm {
       inline int GetArraySize();
 
       /// Exists( int aDestroyerId )
-      ///   Checks whether the specified destroyer exists. 
+      ///   Checks whether the specified destroyer exists.
       ///
       /// Parameters:
       ///   aFontId: ID of the destroyer.
-      /// 
+      ///
       /// Returns:
       ///   True if the destroyer exists.
       ///
@@ -3177,11 +3190,11 @@ namespace gm {
       inline int GetArraySize();
 
       /// Exists( int aChangerId )
-      ///   Checks whether the specified changer exists. 
+      ///   Checks whether the specified changer exists.
       ///
       /// Parameters:
       ///   aFontId: ID of the changer.
-      /// 
+      ///
       /// Returns:
       ///   True if the changer exists.
       ///
@@ -3221,7 +3234,7 @@ namespace gm {
       /// Parameters:
       ///   aParticleEnumProc: User-defined PARTICLEENUMPROC callback function.
       ///   aParam: [optional] Value that will be passed to your callback function.
-      /// 
+      ///
       /// Remarks:
       ///   Definition of PARTICLEENUMPROC function:
       ///     bool ParticleEnumProc( GMPARTICLE& aParticle, void* aParam );
@@ -3267,19 +3280,19 @@ namespace gm {
 
       /// SetAutoDraw( bool aEnabled )
       ///   Sets the particle system's automatic draw option.
-      /// 
+      ///
       /// Parameters:
       ///   aEnabled: Specifies whether to enable or disable the option.
-      /// 
+      ///
       inline void SetAutoDraw( bool aEnabled );
 
       /// SetAutoDraw( bool aEnabled )
       ///   Changes the particle system's draw order.
-      /// 
+      ///
       /// Parameters:
       ///   aEnabled: Specifies whether the new particles must be drawn
       ///             over the older particles.
-      /// 
+      ///
       inline void SetDrawOldOverNew( bool aEnabled );
 
       /// GetX()
@@ -3389,11 +3402,11 @@ namespace gm {
       inline int GetArraySize();
 
       /// Exists( int aParticleSystemId )
-      ///   Checks whether the specified particle system exists. 
+      ///   Checks whether the specified particle system exists.
       ///
       /// Parameters:
       ///   aParticleSystemId: ID of the particle system.
-      /// 
+      ///
       /// Returns:
       ///   True if the particle system exists.
       ///
@@ -3413,7 +3426,7 @@ namespace gm {
   public:
     /// GetSprite()
     ///   Gets a sprite used in the particle type.
-    /// 
+    ///
     /// Returns:
     ///   ID of the sprite or -1 if sprite has not been set.
     ///
@@ -3449,7 +3462,7 @@ namespace gm {
 
     /// SetSprite()
     ///   Sets a sprite for the particle type.
-    /// 
+    ///
     /// Parameters:
     ///   aSpriteId: ID of the sprite. By passing -1
     ///              no sprite will be used.
@@ -3499,7 +3512,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aShape: New shape. (gm::pt_shape_*)
-    /// 
+    ///
     inline void SetShape( int aShape );
 
     /// GetSizeMin()
@@ -3507,7 +3520,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Minimum size of the particle type.
-    /// 
+    ///
     inline double GetSizeMin();
 
     /// GetSizeMax()
@@ -3515,7 +3528,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Maximum size of the particle type.
-    /// 
+    ///
     inline double GetSizeMax();
 
     /// GetSizeIncrease()
@@ -3541,7 +3554,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aSize: New minimum size.
-    /// 
+    ///
     inline void SetSizeMin( double aSize );
 
     /// SetSizeMax( double aSize )
@@ -3549,7 +3562,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aSize: New maximum size.
-    /// 
+    ///
     inline void SetSizeMax( double aSize );
 
     /// SetSizeIncrease( double aIncrease )
@@ -3557,7 +3570,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aSize: New size increase ammount.
-    /// 
+    ///
     inline void SetSizeIncrease( double aIncrease );
 
     /// SetSizeWiggle( double aWiggle )
@@ -3584,7 +3597,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Minimum speed of the particle type.
-    /// 
+    ///
     inline double GetSpeedMin();
 
     /// GetSpeedMax()
@@ -3618,7 +3631,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aSpeed: New minimum speed.
-    /// 
+    ///
     inline void SetSpeedMin( double aSpeed );
 
     /// SetSpeedMax( double aSpeed )
@@ -3626,7 +3639,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aSpeed: New maximum speed.
-    /// 
+    ///
     inline void SetSpeedMax( double aSpeed );
 
     /// SetSpeedIncrease( double aIncrease )
@@ -3635,7 +3648,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aIncrease: New speed increase ammount.
-    /// 
+    ///
     inline void SetSpeedIncrease( double aIncrease );
 
     /// SetSpeedWiggle( double aWiggle )
@@ -3644,7 +3657,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aWiggle: New speed wiggling ammount.
-    /// 
+    ///
     inline void SetSpeedWiggle( double aWiggle );
 
     /// SetSpeed( double aMin, double aMax, double aIncrease, double aWiggle )
@@ -3663,7 +3676,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Minimum direction of the particle type.
-    /// 
+    ///
     inline double GetDirectionMin();
 
     /// GetDirectionMax()
@@ -3671,7 +3684,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Maximum direction of the particle type.
-    /// 
+    ///
     inline double GetDirectionMax();
 
     /// GetDirectionIncrease()
@@ -3680,7 +3693,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Direction increase ammount.
-    /// 
+    ///
     inline double GetDirectionIncrease();
 
     /// GetDirectionWiggle()
@@ -3689,7 +3702,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Direction wiggling ammount.
-    /// 
+    ///
     inline double GetDirectionWiggle();
 
     /// SetDirectionMin( double aDirection )
@@ -3697,7 +3710,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aDirection: New minimum direction.
-    /// 
+    ///
     inline void SetDirectionMin( double aDirection );
 
     /// SetDirectionMax( double aDirection )
@@ -3705,7 +3718,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aDirection: New maximum direction.
-    /// 
+    ///
     inline void SetDirectionMax( double aDirection );
 
     /// SetDirectionIncrease( double aIncrease )
@@ -3714,7 +3727,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aIncrease: New direction increase ammount.
-    /// 
+    ///
     inline void SetDirectionIncrease( double aIncrease );
 
     /// SetDirectionWiggle( double aWiggle )
@@ -3723,7 +3736,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aWiggle: New direction wiggling ammount.
-    /// 
+    ///
     inline void SetDirectionWiggle( double aWiggle );
 
     /// SetDirection( double aMin, double aMax, double aIncrease, double aWiggle )
@@ -3742,7 +3755,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Minimum angle of the particle type.
-    /// 
+    ///
     inline double GetAngleMin();
 
     /// GetAngleMax()
@@ -3750,7 +3763,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Maximum angle of the particle type.
-    /// 
+    ///
     inline double GetAngleMax();
 
     /// GetAngleIncrease()
@@ -3759,7 +3772,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Angle increase ammount.
-    /// 
+    ///
     inline double GetAngleIncrease();
 
     /// GetAngleWiggle()
@@ -3768,7 +3781,7 @@ namespace gm {
     ///
     /// Returns:
     ///   Angle wiggling ammount.
-    /// 
+    ///
     inline double GetAngleWiggle();
 
     /// SetAngleMin( double aAngle )
@@ -3776,7 +3789,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aAngle: New minimum angle.
-    /// 
+    ///
     inline void SetAngleMin( double aAngle );
 
     /// SetAngleMax( double aAngle )
@@ -3784,7 +3797,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aAngle: New maximum angle.
-    /// 
+    ///
     inline void SetAngleMax( double aAngle );
 
     /// SetAngleIncrease( double aIncrease )
@@ -3793,7 +3806,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aIncrease: New angle increase ammount.
-    /// 
+    ///
     inline void SetAngleIncrease( double aIncrease );
 
     /// SetAngleWiggle( double aWiggle )
@@ -3802,7 +3815,7 @@ namespace gm {
     ///
     /// Parameters:
     ///   aWiggle: New angle wiggling ammount.
-    /// 
+    ///
     inline void SetAngleWiggle( double aWiggle );
 
     /// SetAngle( double aMin, double aMax, double aIncrease, double aWiggle, bool aRelative )
@@ -3880,7 +3893,7 @@ namespace gm {
 
     /// GetGravityAmmount()
     ///   Gets the ammount of gravity of the particle type.
-    /// 
+    ///
     /// Returns:
     ///   Ammount of gravity.
     ///
@@ -3888,7 +3901,7 @@ namespace gm {
 
     /// GetGravityDirection()
     ///   Gets the direction of gravity of the particle type.
-    /// 
+    ///
     /// Returns:
     ///   Direction of gravity.
     ///
@@ -3896,7 +3909,7 @@ namespace gm {
 
     /// SetGravityAmmount( double aAmmount )
     ///   Sets the ammount of gravity of the particle type.
-    /// 
+    ///
     /// Parameters:
     ///   aAmmount: New ammount of gravity.
     ///
@@ -3904,7 +3917,7 @@ namespace gm {
 
     /// SetGravityDirection( double aDirection )
     ///   Sets the direction of gravity of the particle type.
-    /// 
+    ///
     /// Parameters:
     ///   aDirection: New direction of gravity.
     ///
@@ -3912,7 +3925,7 @@ namespace gm {
 
     /// SetGravityDirection( double aDirection )
     ///   Sets the gravity of the particle type.
-    /// 
+    ///
     /// Parameters:
     ///   aAmmount: Ammount of gravity.
     ///   aDirection: Direction of gravity.
@@ -3921,7 +3934,7 @@ namespace gm {
 
     /// GetLifeMin()
     ///   Gets the minimum lifetime of the particle type.
-    /// 
+    ///
     /// Returns:
     ///   Minimum lifetime of the particle type.
     ///
@@ -3929,7 +3942,7 @@ namespace gm {
 
     /// GetLifeMax()
     ///   Gets the maximum lifetime of the particle type.
-    /// 
+    ///
     /// Returns:
     ///   Maximum lifetime of the particle type.
     ///
@@ -3937,7 +3950,7 @@ namespace gm {
 
     /// SetLifeMin( int aLife )
     ///   Sets the minimum lifetime of the particle type.
-    /// 
+    ///
     /// Parameters:
     ///   aLife: New lifetime.
     ///
@@ -3945,7 +3958,7 @@ namespace gm {
 
     /// SetLifeMax( int aLife )
     ///   Sets the maximum lifetime of the particle type.
-    /// 
+    ///
     /// Parameters:
     ///   aLife: New lifetime.
     ///
@@ -3953,7 +3966,7 @@ namespace gm {
 
     /// SetLife( int aMin, int aMax )
     ///   Sets the lifetime of the particle type.
-    /// 
+    ///
     /// Parameters:
     ///   aMin: Miniumum lifetime.
     ///   aMax: Maximum lifetime.
@@ -3963,16 +3976,16 @@ namespace gm {
     /// GetDeathParticleType()
     ///   Gets a particle type used to burst particles
     ///   when the particles of the particle type dies.
-    /// 
+    ///
     /// Returns:
     ///   ID of a particle type.
     ///
     inline int GetDeathParticleType();
 
     /// GetDeathParticleType()
-    ///   Gets a number of particles burst when the 
+    ///   Gets a number of particles burst when the
     ///   particles of the particle type dies.
-    /// 
+    ///
     /// Returns:
     ///   Number of particles.
     ///
@@ -3981,16 +3994,16 @@ namespace gm {
     /// SetDeathParticleType( int aParticleTypeId )
     ///   Sets a particle type used to burst particles
     ///   when the particles of the particle type dies.
-    /// 
+    ///
     /// Parameters:
     ///   aParticleTypeId: ID of a particle type.
     ///
     inline void SetDeathParticleType( int aParticleTypeId );
 
     /// SetDeathParticleNumber( int aNumber )
-    ///   Sets the number of particles burst when the 
+    ///   Sets the number of particles burst when the
     ///   particles of the particle type dies.
-    /// 
+    ///
     /// Parameters:
     ///   aNumber: Number of the particles.
     ///
@@ -4000,7 +4013,7 @@ namespace gm {
     ///   Sets a number of particles and a particle type
     ///   used to burst particles when the particles of
     ///   the particle type dies.
-    /// 
+    ///
     /// Parameters:
     ///   aParticleTypeId: ID of a particle type.
     ///   aNumber: Number of the particles.
@@ -4010,16 +4023,16 @@ namespace gm {
     /// GetStepParticleType()
     ///   Gets a particle type used to burst particles
     ///   per step of the particle type.
-    /// 
+    ///
     /// Returns:
     ///   ID of a particle type.
     ///
     inline int GetStepParticleType();
 
     /// GetStepParticleNumber()
-    ///   Gets a number of particles burst per step 
+    ///   Gets a number of particles burst per step
     ///   of the particle type.
-    /// 
+    ///
     /// Returns:
     ///   Number of particles.
     ///
@@ -4028,16 +4041,16 @@ namespace gm {
     /// SetStepParticleType( int aParticleTypeId )
     ///   Sets a particle type used to burst particles
     ///   per step of the particle type.
-    /// 
+    ///
     /// Parameters:
     ///   aParticleTypeId: ID of a particle type.
     ///
     inline void SetStepParticleType( int aParticleTypeId );
 
     /// SetStepParticleNumber( int aNumber )
-    ///   Sets a number of particles burst per step 
+    ///   Sets a number of particles burst per step
     ///   of the particle type.
-    /// 
+    ///
     /// Parameters:
     ///   aNumber: Number of particles.
     ///
@@ -4047,7 +4060,7 @@ namespace gm {
     ///   Sets a number of particles and a particle type
     ///   used to burst particles per step of the particle
     ///   type.
-    /// 
+    ///
     /// Parameters:
     ///   aParticleTypeId: ID of a particle type.
     ///   aNumber: Number of the particles.
@@ -4056,7 +4069,7 @@ namespace gm {
 
     /// GetColorType()
     ///   Gets type of the particle coloring.
-    /// 
+    ///
     /// Returns:
     ///   PCT_COLOR1 - particle type uses a single color for the particles.
     ///   PCT_COLOR2 - particle type interpolates between two colors.
@@ -4072,7 +4085,7 @@ namespace gm {
 
     /// SetColorType( ParticleColorType aColorType )
     ///   Sets type of the particle coloring.
-    /// 
+    ///
     /// Parameters:
     ///   aColorType: Type of the coloring. You can specify the following values:
     ///     PCT_COLOR1 - particle type uses a single color for the particles.
@@ -4089,7 +4102,7 @@ namespace gm {
 
     /// GetColorComponent1()
     ///   Gets the first value used in particle coloring.
-    /// 
+    ///
     /// Returns:
     ///   The return value depends on a coloring type:
     ///     PCT_COLOR1 - Color
@@ -4103,7 +4116,7 @@ namespace gm {
 
     /// GetColorComponent2()
     ///   Gets the second value used in particle coloring.
-    /// 
+    ///
     /// Returns:
     ///   The return value depends on a coloring type:
     ///     PCT_COLOR1 - Undefined
@@ -4117,7 +4130,7 @@ namespace gm {
 
     /// GetColorComponent3()
     ///   Gets the third value used in particle coloring.
-    /// 
+    ///
     /// Returns:
     ///   The return value depends on a coloring type:
     ///     PCT_COLOR1 - Undefined
@@ -4131,7 +4144,7 @@ namespace gm {
 
     /// GetColorComponent4()
     ///   Gets the fourth value used in particle coloring.
-    /// 
+    ///
     /// Returns:
     ///   The return value depends on a coloring type:
     ///     PCT_COLOR1 - Undefined
@@ -4145,7 +4158,7 @@ namespace gm {
 
     /// GetColorComponent5()
     ///   Gets the fifth value used in particle coloring.
-    /// 
+    ///
     /// Returns:
     ///   The return value depends on a coloring type:
     ///     PCT_COLOR1 - Undefined
@@ -4159,7 +4172,7 @@ namespace gm {
 
     /// GetColorComponent6()
     ///   Gets the sixth value used in particle coloring.
-    /// 
+    ///
     /// Returns:
     ///   The return value depends on a coloring type:
     ///     PCT_COLOR1 - Undefined
@@ -4173,7 +4186,7 @@ namespace gm {
 
     /// SetColorComponent1( int aValue )
     ///   Sets the first value used in particle coloring.
-    /// 
+    ///
     /// Parameters:
     ///   aValue: Meaning of the parameter depends on a coloring
     ///           type:
@@ -4188,7 +4201,7 @@ namespace gm {
 
     /// SetColorComponent2( int aValue )
     ///   Sets the second value used in particle coloring.
-    /// 
+    ///
     /// Parameters:
     ///   aValue: Meaning of the parameter depends on a coloring
     ///           type:
@@ -4203,7 +4216,7 @@ namespace gm {
 
     /// SetColorComponent3( int aValue )
     ///   Sets the third value used in particle coloring.
-    /// 
+    ///
     /// Parameters:
     ///   aValue: Meaning of the parameter depends on a coloring
     ///           type:
@@ -4218,7 +4231,7 @@ namespace gm {
 
     /// SetColorComponent4( int aValue )
     ///   Sets the fourth value used in particle coloring.
-    /// 
+    ///
     /// Parameters:
     ///   aValue: Meaning of the parameter depends on a coloring
     ///           type:
@@ -4233,7 +4246,7 @@ namespace gm {
 
     /// SetColorComponent5( int aValue )
     ///   Sets the fifth value used in particle coloring.
-    /// 
+    ///
     /// Parameters:
     ///   aValue: Meaning of the parameter depends on a coloring
     ///           type:
@@ -4248,7 +4261,7 @@ namespace gm {
 
     /// SetColorComponent6( int aValue )
     ///   Sets the sixth value used in particle coloring.
-    /// 
+    ///
     /// Parameters:
     ///   aValue: Meaning of the parameter depends on a coloring
     ///           type:
@@ -4264,7 +4277,7 @@ namespace gm {
     /// SetColorSingle( int aColor )
     ///   Equivalent of gm::part_type_color1 function.
     ///   Changes coloring type to PCT_COLOR1.
-    /// 
+    ///
     /// Parameters:
     ///   aValue: Color of the particles.
     ///
@@ -4273,7 +4286,7 @@ namespace gm {
     /// SetColorInterpolation2( int aColor1, int aColor2 )
     ///   Equivalent of gm::part_type_color2 function.
     ///   Changes coloring type to PCT_COLOR2.
-    /// 
+    ///
     /// Parameters:
     ///   aColor1: First color used in interpolation.
     ///   aColor2: Second color used in interpolation.
@@ -4283,7 +4296,7 @@ namespace gm {
     /// SetColorInterpolation3( int aColor1, int aColor2, int aColor3 )
     ///   Equivalent of gm::part_type_color3 function.
     ///   Changes coloring type to PCT_COLOR3.
-    /// 
+    ///
     /// Parameters:
     ///   aColor1: First color used in interpolation.
     ///   aColor2: Second color used in interpolation.
@@ -4294,7 +4307,7 @@ namespace gm {
     /// SetColorRGB( aRedMin, aRedMax, aGreenMin, aGreenMax, aBlueMin, aBlueMax );
     ///   Equivalent of gm::part_type_color_rgb function.
     ///   Changes coloring type to PCT_RGB.
-    /// 
+    ///
     /// Parameters:
     ///   aRedMin: Minimum red.
     ///   aRedMax: Maximum red.
@@ -4303,14 +4316,14 @@ namespace gm {
     ///   aBlueMin: Minimum blue.
     ///   aBlueMax: Maximum blue.
     ///
-    inline void SetColorRGB( unsigned char aRedMin, unsigned char aRedMax, 
+    inline void SetColorRGB( unsigned char aRedMin, unsigned char aRedMax,
                              unsigned char aGreenMin, unsigned char aGreenMax,
                              unsigned char aBlueMin, unsigned char aBlueMax );
 
     /// SetColorHSV( aHueMin, aHueMax, aSaturationMin, aSaturationMax, aValueMin, aValueMax );
     ///   Equivalent of gm::part_type_color_hsv function.
     ///   Changes coloring type to PCT_RGB.
-    /// 
+    ///
     /// Parameters:
     ///   aHueMin: Minimum hue.
     ///   aHueMax: Maximum hue.
@@ -4319,14 +4332,14 @@ namespace gm {
     ///   aValueMin: Minimum value.
     ///   aValueMax: Maximum value.
     ///
-    inline void SetColorHSV( unsigned char aHueMin, unsigned char aHueMax, 
+    inline void SetColorHSV( unsigned char aHueMin, unsigned char aHueMax,
                              unsigned char aSaturationMin, unsigned char aSaturationMax,
                              unsigned char aValueMin, unsigned char aValueMax );
 
     /// SetColorMix( int aColor1, int aColor2 )
     ///   Equivalent of gm::part_type_color_mix function.
     ///   Changes coloring type to PCT_MIX.
-    /// 
+    ///
     /// Parameters:
     ///   aColor1: First color used in mixing.
     ///   aColor2: Second color used in mixing.
@@ -4457,11 +4470,11 @@ namespace gm {
       inline int GetArraySize();
 
       /// Exists( int aParticleTypeId )
-      ///   Checks whether the specified particle type exists. 
+      ///   Checks whether the specified particle type exists.
       ///
       /// Parameters:
       ///   aParticleTypeId: ID of the particle type.
-      /// 
+      ///
       /// Returns:
       ///   True if the particle type exists.
       ///
@@ -4470,7 +4483,7 @@ namespace gm {
     private:
       IParticleType m_iParticleType;
   };
-  
+
   /// IProperties
   ///   Interface that provides access to the game's built-in variables.
   ///   It should be accessed only from within the CGMAPI class.
@@ -4932,7 +4945,7 @@ namespace gm {
   /// Notes:
   ///   Only one instance of this class is allowed at a runtime.
   ///   CGMAPI should be initialized before calling any GM function.
-  /// 
+  ///
   class CGMAPI {
     public:
       /// Create( unsigned long* aResult )
@@ -4945,10 +4958,10 @@ namespace gm {
       ///     GMAPI_INITIALIZATION_SUCCESS - GMAPI has been initialized successfully
       ///     GMAPI_INITIALIZATION_FAILED - Failed to initialize GMAPI
       ///     GMAPI_ALREADY_INITIALIZED - An instance of the CGMAPI class already exists
-      /// 
+      ///
       /// Returns:
       ///   Pointer to the CGMAPI class instance, or NULL if failed to initialize.
-      /// 
+      ///
       static CGMAPI* Create( unsigned long* aResult );
 
       /// Destroy()
@@ -4992,7 +5005,7 @@ namespace gm {
       ///     GM_VERSION_70 - Game Maker 7.0
       ///     GM_VERSION_80 - Game Maker 8.0
       ///     GM_VERSION_INCOMPATIBLE - Unknown GM version
-      /// 
+      ///
       static unsigned long GetGMVersion() {
         return m_gmVersion;
       }
@@ -5069,11 +5082,11 @@ namespace gm {
       ///
       /// Parameters:
       ///   aTextureId: ID of the GM texture.
-      /// 
+      ///
       /// Returns:
       ///   If texture ID is valid then pointer to IDirect3DTexture8 will be
       ///   returned, otherwise function will return NULL.
-      /// 
+      ///
       static IDirect3DTexture8* GetDirect3DTexture( int aTextureId ) {
         return ( (*m_pTextures)[aTextureId].isValid == TRUE ? (*m_pTextures)[aTextureId].texture : NULL );
       }
@@ -5084,7 +5097,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to IDirect3D8 interface.
-      /// 
+      ///
       IDirect3D8* GetDirect3DInterface() {
         return m_pDirect3dData->direct3dInterface;
       }
@@ -5108,7 +5121,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Size of bitmap in bytes.
-      /// 
+      ///
       static unsigned long GetBitmapSize( GMBITMAP* aBitmap );
 
       /// FunctionData()
@@ -5116,7 +5129,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to GMFUNCTIONINFOSTORAGE structure.
-      /// 
+      ///
       static PGMFUNCTIONINFOSTORAGE FunctionData() {
         return m_pFunctionData;
       }
@@ -5126,7 +5139,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to GMBACKGROUNDSTORAGE structure.
-      /// 
+      ///
       static PGMBACKGROUNDSTORAGE BackgroundData() {
         return m_pBackgroundData;
       }
@@ -5136,7 +5149,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to GMSPRITESTORAGE structure.
-      /// 
+      ///
       static PGMSPRITESTORAGE SpriteData() {
         return m_pSpriteData;
       }
@@ -5146,7 +5159,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to GMSCRIPTSTORAGE structure.
-      /// 
+      ///
       static PGMSCRIPTSTORAGE ScriptData() {
         return m_pScriptData;
       }
@@ -5156,7 +5169,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to GMSOUNDSTORAGE structure.
-      /// 
+      ///
       static PGMSOUNDSTORAGE SoundData() {
         return m_pSoundData;
       }
@@ -5166,7 +5179,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to GMFONTSTORAGE structure.
-      /// 
+      ///
       static PGMFONTSTORAGE FontData() {
         return m_pFontData;
       }
@@ -5176,7 +5189,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to GMDIRECT3DDATA structure.
-      /// 
+      ///
       static PGMDIRECT3DDATA Direct3DData() {
         return m_pDirect3dData;
       }
@@ -5186,7 +5199,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to PGMPARTICLESTORAGE structure.
-      /// 
+      ///
       static PGMPARTICLESTORAGE ParticleData() {
         return m_pParticleData;
       }
@@ -5196,9 +5209,9 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to an array of GMSURFACE structures.
-      /// 
+      ///
       static GMSURFACE* GetSurfaceArray() {
-        return *m_pSurfaces; 
+        return *m_pSurfaces;
       }
 
       /// GetTextureArray()
@@ -5206,7 +5219,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to an array of GMTEXTURE structures.
-      /// 
+      ///
       static GMTEXTURE* GetTextureArray() {
         return *m_pTextures;
       }
@@ -5229,7 +5242,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to the swap table.
-      /// 
+      ///
       static const char* ScriptSwapTable() {
         return m_pSwapTable;
       }
@@ -5240,7 +5253,7 @@ namespace gm {
       ///
       /// Returns:
       ///   Pointer to "ArraySize" variable.
-      /// 
+      ///
       static int* SurfaceArraySizePtr() {
         return m_pSurfaceArraySize;
       }
@@ -5254,7 +5267,7 @@ namespace gm {
       HWND GetMainWindowHandle();
 
       /// GetDebugWindowHandle()
-      ///   Returns debug window handle. 
+      ///   Returns debug window handle.
       ///
       /// Returns:
       ///   Debug window handle. In GM7/GM8 function can return
@@ -5296,23 +5309,23 @@ namespace gm {
       ///
       /// Returns:
       ///   ID of the current instance. If you try to get the ID
-      ///   in the same function where the GMAPI has just been 
+      ///   in the same function where the GMAPI has just been
       ///   initialized, it'll return gm::noone constant.
       ///
       int GetCurrentInstanceID() {
         if ( !*GMAPI_ADDRESS_PTR_CURRENTINSTANCE )
           return gm::noone;
-        return (*GMAPI_ADDRESS_PTR_CURRENTINSTANCE)->id;
+        return (*GMAPI_ADDRESS_PTR_CURRENTINSTANCE)->structNew.id;
       }
 
       /// SetCurrentInstance( PGMINSTANCE aInstance )
       ///   Sets the current instance. Current instance is used
       ///   when calling the GM functions from GMAPI. You can change
-      ///   the pointer to call to functions with a specifed instance.
+      ///   the pointer to call the functions with a specifed instance.
       ///
       /// Parameters:
       ///   aInstance: Pointer to the instance.
-      /// 
+      ///
       void SetCurrentInstance( PGMINSTANCE aInstance ) {
         *GMAPI_ADDRESS_PTR_CURRENTINSTANCE = aInstance;
       }
@@ -5344,7 +5357,7 @@ namespace gm {
       int GetOtherInstanceID() {
         if ( !*GMAPI_ADDRESS_PTR_OTHERINSTANCE )
           return noone;
-        return (*GMAPI_ADDRESS_PTR_OTHERINSTANCE)->id;
+        return (*GMAPI_ADDRESS_PTR_OTHERINSTANCE)->structNew.id;
       }
 
       /// SetOtherInstance( PGMINSTANCE aInstance )
@@ -5353,7 +5366,7 @@ namespace gm {
       ///
       /// Parameters:
       ///   aInstance: Pointer to the instance.
-      /// 
+      ///
       void SetOtherInstance( PGMINSTANCE aInstance ) {
         *GMAPI_ADDRESS_PTR_OTHERINSTANCE = aInstance;
       }
@@ -5363,7 +5376,7 @@ namespace gm {
       ///
       /// Parameters:
       ///   aInstanceId: ID of an instance.
-      /// 
+      ///
       /// Returns:
       ///   Pointer to specified instance. If instance doesn't exists
       ///   function will return NULL.
@@ -5390,7 +5403,7 @@ namespace gm {
       ///   EnumerateInstances method will pass reference to instance via aInstance
       ///   parameter and additional given value to aParam parameter. The
       ///   enumeration will be stopped if your function will return false.
-      /// 
+      ///
       void EnumerateInstances( INSTANCEENUMPROC aInstanceEnumProc, void* aParam );
 
       /// With( int aId, bool aCheckInheritance, bool aIncludeDeactivated, WITHPROC aProc, void* aParam )
@@ -5471,7 +5484,7 @@ namespace gm {
       /// Returns:
       ///   Pointer to the variable (GMVARIABLE structure). If variable doesn't
       ///   exists, return value will be NULL.
-      ///   
+      ///
       PGMVARIABLE GetGlobalVariablePtr( int aSymbolId );
 
       /// PreserveFunctionData();
@@ -5561,7 +5574,7 @@ namespace gm {
       };
 
       static bool InstanceEnumGetID( GMINSTANCE& aInstance, void* aParam ) {
-        if ( aInstance.id == ((INSTANCEENUMGETID*) aParam)->id ) {
+        if ( aInstance.structNew.id == ((INSTANCEENUMGETID*) aParam)->id ) {
           ((INSTANCEENUMGETID*) aParam)->result = &aInstance;
           return false;
         }
@@ -5939,30 +5952,30 @@ namespace gm {
     return CGMAPI::GetDirect3DTexture( CGMAPI::FontData()->fonts[m_fontId]->textureId );
   }
 
-  int IFont::GetCharPositionX( char aCharacter ) {
+  int IFont::GetCharPositionX( unsigned char aCharacter ) {
     return CGMAPI::FontData()->fonts[m_fontId]->charXOffset[aCharacter];
   }
 
-  int IFont::GetCharPositionY( char aCharacter ) {
+  int IFont::GetCharPositionY( unsigned char aCharacter ) {
     return CGMAPI::FontData()->fonts[m_fontId]->charYOffset[aCharacter];
   }
 
-  int IFont::GetCharBoundingBoxLeft( char aCharacter ) {
+  int IFont::GetCharBoundingBoxLeft( unsigned char aCharacter ) {
     return CGMAPI::FontData()->fonts[m_fontId]->charBboxLeft[aCharacter];
   }
 
-  int IFont::GetCharBoundingBoxRight( char aCharacter ) {
+  int IFont::GetCharBoundingBoxRight( unsigned char aCharacter ) {
     return CGMAPI::FontData()->fonts[m_fontId]->charBboxRight[aCharacter];
   }
 
-  int IFont::GetCharBoundingBoxTop( char aCharacter ) {
+  int IFont::GetCharBoundingBoxTop( unsigned char aCharacter ) {
     return CGMAPI::FontData()->fonts[m_fontId]->charBboxTop[aCharacter];
   }
 
-  int IFont::GetCharBoundingBoxBottom( char aCharacter ) {
+  int IFont::GetCharBoundingBoxBottom( unsigned char aCharacter ) {
     return CGMAPI::FontData()->fonts[m_fontId]->charBboxBottom[aCharacter];
   }
-  
+
   /************************************************************************/
   /* IParticleTypes inlined methods                                       */
   /************************************************************************/
@@ -6390,7 +6403,7 @@ namespace gm {
     CGMAPI::ParticleData()->particleTypes[m_particleTypeId].colorComponent6 = aValue;
   }
 
-  void IParticleType::SetColorRGB( unsigned char aRedMin, unsigned char aRedMax, 
+  void IParticleType::SetColorRGB( unsigned char aRedMin, unsigned char aRedMax,
                                    unsigned char aGreenMin, unsigned char aGreenMax,
                                    unsigned char aBlueMin, unsigned char aBlueMax ) {
     GMPARTICLETYPE& pt = CGMAPI::ParticleData()->particleTypes[m_particleTypeId];
@@ -6403,7 +6416,7 @@ namespace gm {
     pt.colorComponent6 = aBlueMax;
   }
 
-  void IParticleType::SetColorHSV( unsigned char aHueMin, unsigned char aHueMax, 
+  void IParticleType::SetColorHSV( unsigned char aHueMin, unsigned char aHueMax,
                                    unsigned char aSaturationMin, unsigned char aSaturationMax,
                                    unsigned char aValueMin, unsigned char aValueMax ) {
     GMPARTICLETYPE& pt = CGMAPI::ParticleData()->particleTypes[m_particleTypeId];
@@ -7079,6 +7092,26 @@ namespace gm {
       return;
 
     *m_pCursorSprite = aSprite;
+  }
+
+  /************************************************************************/
+  /* CGlobals inlined methods                                             */
+  /************************************************************************/
+
+  PGMVARIABLELIST CGlobals::InstanceVarList( PGMINSTANCE aInstance ) {
+    return ( UseNewStructs() ? aInstance->structNew.variableListPtr : aInstance->structOld.variableListPtr );
+  }
+
+  int CGlobals::InstanceID( PGMINSTANCE aInstance ) {
+    return ( UseNewStructs() ? aInstance->structNew.id : aInstance->structOld.id );
+  }
+
+  int CGlobals::InstanceObjectID( PGMINSTANCE aInstance ) {
+    return ( UseNewStructs() ? aInstance->structNew.object_index : aInstance->structOld.object_index );
+  }
+
+  bool CGlobals::IsInstanceDeactivated( PGMINSTANCE aInstance ) {
+    return ( UseNewStructs() ? aInstance->structNew.deactivated : aInstance->structOld.deactivated );
   }
 
 }

@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiParticles.h
-  - Wrapped GM functions; Parser-generated code
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiParticles.h                                                    */
+/*   - Wrapped GM functions; Parser-generated code                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #pragma once
 #include "GmapiInternal.h"
@@ -41,7 +41,7 @@ namespace gm {
   void part_type_shape( int ind, int shape );
   void part_type_sprite( int ind, int sprite, bool animat, bool stretch,
                          bool random );
-  void part_type_size( int ind, double size_min, double size_max, 
+  void part_type_size( int ind, double size_min, double size_max,
                        double size_incr, double size_wiggle );
   void part_type_scale( int ind, double xscale, double yscale );
   void part_type_orientation( int ind, double ang_min, double ang_max,
@@ -81,7 +81,7 @@ namespace gm {
   void part_system_drawit( int ind );
   void part_particles_create( int ind, double x, double y, int parttype,
                               int number );
-  void part_particles_create_color( int ind, double x, double y, 
+  void part_particles_create_color( int ind, double x, double y,
                                     int parttype, int color, int number );
   void part_particles_clear( int ind );
   int part_particles_count( int ind );

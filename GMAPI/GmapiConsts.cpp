@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-  GMAPI is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
-
-  GMAPI is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with GMAPI; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-  02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiConsts.cpp
-  - Constants used by GMAPI
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiConsts.cpp                                                     */
+/*   - Constants used by GMAPI                                          */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #include "GmapiConsts.h"
 
@@ -67,7 +67,7 @@ namespace gm {
 
   PGMSPRITESTORAGE const GM61_ADDRESS_STORAGE_SPRITES          = (PGMSPRITESTORAGE) 0x00537A40;
   PGMSPRITESTORAGE const GM70_ADDRESS_STORAGE_SPRITES          = (PGMSPRITESTORAGE) 0x00587AB0;
-  PGMSPRITESTORAGE const GM80_ADDRESS_STORAGE_SPRITES          = (PGMSPRITESTORAGE) 0x0058D3D4;  
+  PGMSPRITESTORAGE const GM80_ADDRESS_STORAGE_SPRITES          = (PGMSPRITESTORAGE) 0x0058D3D4;
   PGMBACKGROUNDSTORAGE const GM61_ADDRESS_STORAGE_BACKGROUNDS  = (PGMBACKGROUNDSTORAGE) 0x00537A4C;
   PGMBACKGROUNDSTORAGE const GM70_ADDRESS_STORAGE_BACKGROUNDS  = (PGMBACKGROUNDSTORAGE) 0x00587ABC;
   PGMBACKGROUNDSTORAGE const GM80_ADDRESS_STORAGE_BACKGROUNDS  = (PGMBACKGROUNDSTORAGE) 0x0058D3E0;
@@ -177,7 +177,7 @@ namespace gm {
 
   BYTE const GM70_PATCH_IDENTIFIERTYPECHECKING[] = {
     0xC7, 0x07, 0xFF, 0xFF, 0xFF, 0xFF, 0x8B, 0x35,
-    0x48, 0x97, 0x58, 0x00, 0x4E, 0x85, 0xF6, 0x7C, 
+    0x48, 0x97, 0x58, 0x00, 0x4E, 0x85, 0xF6, 0x7C,
     0x62, 0x46, 0x33, 0xDB, 0x8D, 0x45, 0xF4, 0x8B,
     0xD3, 0x03, 0xD2, 0x8D, 0x14, 0x92, 0x8B, 0x0D,
     0x44, 0x97, 0x58, 0x00, 0x8D, 0x14, 0xD1, 0xE8,
@@ -187,7 +187,7 @@ namespace gm {
     0xD3, 0x8B, 0x45, 0xFC, 0xE8, 0x5A, 0xFB, 0xFF,
     0xFF, 0x05, 0xA0, 0x86, 0x01, 0x00, 0x89, 0x07,
     0x81, 0x3F, 0xA0, 0x86, 0x01, 0x00, 0x7D, 0x1B,
-    0x8B, 0x45, 0xFC, 0xE8, 0x93, 0x47, 0xFF, 0xFF, 
+    0x8B, 0x45, 0xFC, 0xE8, 0x93, 0x47, 0xFF, 0xFF,
     0x05, 0x20, 0xA1, 0x07, 0x00, 0x89, 0x07, 0x81,
     0x3F, 0x20, 0xA1, 0x07, 0x00, 0x7D, 0x04
   };

@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiGameplay.h
-  - Wrapped GM functions; Parser-generated code
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiGameplay.h                                                     */
+/*   - Wrapped GM functions; Parser-generated code                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #pragma once
 #include "GmapiInternal.h"
@@ -51,7 +51,7 @@ namespace gm {
   bool position_empty( double x, double y );
   bool position_meeting( double x, double y, int obj );
 
-  void path_start( int path, double speed, int endaction, 
+  void path_start( int path, double speed, int endaction,
                    bool absolute );
   void path_end();
 
@@ -162,14 +162,14 @@ namespace gm {
   CGMVariable variable_local_array2_get( const CGMVariable& name, int ind1,
                                          int ind2 );
   void variable_global_set( const CGMVariable& name, const CGMVariable& value );
-  void variable_global_array_set( const CGMVariable& name, int ind, 
+  void variable_global_array_set( const CGMVariable& name, int ind,
                                   const CGMVariable& value );
-  void variable_global_array2_set( const CGMVariable& name, int ind1, 
+  void variable_global_array2_set( const CGMVariable& name, int ind1,
                                    int ind2, const CGMVariable& value );
   void variable_local_set( const CGMVariable& name, const CGMVariable& value );
-  void variable_local_array_set( const CGMVariable& name, int ind, 
+  void variable_local_array_set( const CGMVariable& name, int ind,
                                  const CGMVariable& value );
-  void variable_local_array2_set( const CGMVariable& name, int ind1, 
+  void variable_local_array2_set( const CGMVariable& name, int ind1,
                                   int ind2, const CGMVariable& value );
 
   void set_program_priority( int priority );

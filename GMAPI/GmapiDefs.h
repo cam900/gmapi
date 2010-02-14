@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiDefs.h
-  - Definitions and declarations of types used by GMAPI.
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiMacros.h                                                       */
+/*   - Definitions and declarations of types used by GMAPI              */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #pragma once
 
@@ -205,7 +205,7 @@ namespace gm {
   typedef struct __GMSCRIPTCONTENT {
     void* _rttiData;
     char* code;
-    
+
     __PADDING4 _padding[3];
   } GMSCRIPTCONTENT, *PGMSCRIPTCONTENT;
 
@@ -452,7 +452,7 @@ namespace gm {
     int arraySize;
   } GMFONTSTORAGE, *PGMFONTSTORAGE;
 
-  typedef __declspec( align( 1 ) ) struct __GMFUNCTIONINFO {
+  typedef DECLSPEC_ALIGN( 1 ) struct __GMFUNCTIONINFO {
     BYTE nameLength;
     char name[67];
 
@@ -557,7 +557,7 @@ namespace gm {
     int shape;
 
     int particleType1;
-    int particleType2; 
+    int particleType2;
 
     int kind;
   } GMPARTICLECHANGER, *PGMPARTICLECHANGER;
@@ -566,7 +566,7 @@ namespace gm {
     bool isValid;
 
     int sprite;
-    bool spriteAnimated, spriteStretched, spriteRandomized; 
+    bool spriteAnimated, spriteStretched, spriteRandomized;
 
     int shape;
 
@@ -593,7 +593,7 @@ namespace gm {
     double speedWiggle;
 
     double directionMin;
-    double directionMax; 
+    double directionMax;
     double directionIncrease;
     double directionWiggle;
 

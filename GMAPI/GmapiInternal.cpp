@@ -1,38 +1,34 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiInternal.cpp
-  - Definitions of all GMAPI components, excluding wrapped gm functions
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiInternal.cpp                                                   */
+/*  - Definitions of GMAPI classes and interfaces                       */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #include "GmapiInternal.h"
 #include "GmapiMacros.h"
 
 #include "GmapiResources.h"
 #include "GmapiGameGraphics.h"
-
-#ifdef __GNUC__
-#define sprintf_s snprintf
-#endif
 
 using namespace gm::core;
 
@@ -293,7 +289,7 @@ namespace gm {
 
   void CGMAPI::RetrieveFunctionPointers() {
     for ( int i = 0; i < GM_FUNCTION_COUNT; i++ )
-      m_gmFunctions[i] = GetGMFunctionAddress( GM_FUNCTION_NAMES[i] );
+      m_gmFunctions[i] = (void*) GetGMFunctionAddress( GM_FUNCTION_NAMES[i] );
   }
 
   GMFUCTION CGMAPI::GetGMFunctionAddress( const char* aFunctionName ) {
@@ -346,13 +342,13 @@ namespace gm {
           currentInstance = instanceArray[i];
 
           if ( currentInstance ) {
-            if ( currentInstance->object_index == aId ) {
-              if ( aIncludeDeactivated || !currentInstance->deactivated ) {
+            if ( CGlobals::InstanceObjectID( currentInstance ) == aId ) {
+              if ( aIncludeDeactivated || !CGlobals::IsInstanceDeactivated( currentInstance ) ) {
                 SetCurrentInstance( currentInstance );
                 aProc( aParam );
               }
             } else if ( aCheckInheritance ) {
-              if ( object_is_ancestor( currentInstance->object_index, aId ) ) {
+              if ( object_is_ancestor( CGlobals::InstanceObjectID( currentInstance ), aId ) ) {
                 SetCurrentInstance( currentInstance );
                 aProc( aParam );
               }
@@ -413,8 +409,8 @@ namespace gm {
 
   PGMVARIABLE CGMAPI::GetLocalVariablePtr( PGMINSTANCE aInstancePtr, int aSymbolId ) {
     if ( aSymbolId >= 10000 && aInstancePtr ) {
-      GMVARIABLE* varArray = aInstancePtr->variableListPtr->variables;
-      int varCount = aInstancePtr->variableListPtr->count;
+      GMVARIABLE* varArray = CGlobals::InstanceVarList( aInstancePtr )->variables;
+      int varCount = CGlobals::InstanceVarList( aInstancePtr )->count;
 
       for ( int i = 0; i < varCount; i++ ) {
         if ( varArray[i].symbolId == aSymbolId )
@@ -454,7 +450,7 @@ namespace gm {
           continue;
 
         if ( strcmp( aName, functions[i].name ) == 0 ) {
-          functions[i].address = aFunction;
+          functions[i].address = (void*) aFunction;
 
           if ( aNumberOfArguments > -2 )
             functions[i].argumentNumber = aNumberOfArguments;
@@ -463,7 +459,7 @@ namespace gm {
       }
     } else {
       CGMVariable delphiString( aName );
-      RunnerGMFunctionAdd( delphiString.c_str(), aNumberOfArguments, aFunction );
+      RunnerGMFunctionAdd( delphiString.c_str(), aNumberOfArguments, (void*) aFunction );
     }
   }
 
@@ -491,12 +487,12 @@ namespace gm {
       return;
 
     DWORD oldProtect;
-    VirtualProtect( m_pPatchIdTypeCheck, 
+    VirtualProtect( m_pPatchIdTypeCheck,
                     GM_PATCHSIZE_IDENTIFIERTYPECHECKING,
                     PAGE_EXECUTE_READWRITE,
                     &oldProtect );
 
-    memcpy( m_pPatchIdTypeCheck, 
+    memcpy( m_pPatchIdTypeCheck,
             m_pPatchDataIdTypeCheck,
            GM_PATCHSIZE_IDENTIFIERTYPECHECKING );
 
@@ -598,7 +594,7 @@ namespace gm {
                "%s:\n%s\n\n%s:\nSprite: %s (ID: %d)\nSubimage: %d",
                STR_GMAPI_ERROR, STR_EXC_INVALIDSUBIMAGE, STR_GMAPI_DEBUG,
                spriteName, m_resourceId, m_subimage );
-    
+
     MessageBoxA( hwnd, buffer, 0, MB_SYSTEMMODAL | MB_ICONERROR );
   }
 
@@ -609,7 +605,7 @@ namespace gm {
     sprintf_s( buffer, sizeof( buffer ),
               "%s:\n%s\n\n%s:\nBackground ID: %d",
               STR_GMAPI_ERROR, STR_EXC_BACKGROUNDNOTEXISTS, STR_GMAPI_DEBUG, m_resourceId );
-    
+
     MessageBoxA( hwnd, buffer, 0, MB_SYSTEMMODAL | MB_ICONERROR );
   }
 
@@ -620,7 +616,7 @@ namespace gm {
     sprintf_s( buffer, sizeof( buffer ),
               "%s:\n%s\n\n%s:\nScript ID: %d",
               STR_GMAPI_ERROR, STR_EXC_SCRIPTNOTEXISTS, STR_GMAPI_DEBUG, m_resourceId );
-    
+
     MessageBoxA( hwnd, buffer, 0, MB_SYSTEMMODAL | MB_ICONERROR );
   }
 
@@ -631,7 +627,7 @@ namespace gm {
     sprintf_s( buffer, sizeof( buffer ),
               "%s:\n%s\n\n%s:\nSound ID: %d",
               STR_GMAPI_ERROR, STR_EXC_SOUNDNOTEXISTS, STR_GMAPI_DEBUG, m_resourceId );
-    
+
     MessageBoxA( hwnd, buffer, 0, MB_SYSTEMMODAL | MB_ICONERROR );
   }
 
@@ -642,7 +638,7 @@ namespace gm {
     sprintf_s( buffer, sizeof( buffer ),
               "%s:\n%s\n\n%s:\nSurface ID: %d",
               STR_GMAPI_ERROR, STR_EXC_SURFACENOTEXISTS, STR_GMAPI_DEBUG, m_resourceId );
-    
+
     MessageBoxA( hwnd, buffer, 0, MB_SYSTEMMODAL | MB_ICONERROR );
   }
 
@@ -760,15 +756,15 @@ namespace gm {
   /* CGMVariable class implementation                                     */
   /************************************************************************/
 
-  CGMVariable::CGMVariable( const GMVALUE& aValue ): m_real( 0.0 ),
+  CGMVariable::CGMVariable( const GMVALUE& aValue ): m_stringDispose( true ),
                                                      m_stringPtr( NULL ),
-                                                     m_stringDispose( true ) {
+                                                     m_real( 0.0 ) {
     m_isString = ( aValue.type == VT_STRING );
     *this = aValue;
   }
 
   void CGMVariable::StringSet( const char* aValue ) {
-    if ( !m_stringPtr ) 
+    if ( !m_stringPtr )
       m_stringPtr = DelphiStringAllocate();
 
     DelphiStringSetFromPChar( aValue, m_stringPtr );
@@ -945,7 +941,7 @@ namespace gm {
     if ( CGlobals::UseNewStructs() ) {
       if ( m_background->structNew.bitmap )
         return m_background->structNew.bitmap->structNew.height;
-      else 
+      else
         return 0;
     } else
       return m_background->structOld.height;
@@ -955,7 +951,7 @@ namespace gm {
     if ( CGlobals::UseNewStructs() ) {
       if ( m_background->structNew.bitmap )
         return m_background->structNew.bitmap->structNew.width;
-      else 
+      else
         return 0;
     } else
       return m_background->structOld.width;
@@ -1223,7 +1219,7 @@ namespace gm {
 
     return backgroundDataPtr[2];
   }
-  
+
   double IProperties::GetBackgroundX( int aId ) {
     double* backgroundDataPtr = (double*) GetPointerToRoomBackgroundData( aId );
     if ( !backgroundDataPtr )

@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiGameGraphics.h
-  - Wrapped GM functions; Parser-generated code
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiGameGraphics.h                                                 */
+/*   - Wrapped GM functions; Parser-generated code                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #pragma once
 #include "GmapiInternal.h"
@@ -36,7 +36,7 @@ namespace gm {
   void draw_sprite_part( int sprite, int subimg, int left, int top,
                          int width, int height, double x, double y );
   void draw_background( int back, double x, double y );
-  void draw_background_stretched( int back, double x, double y, 
+  void draw_background_stretched( int back, double x, double y,
                                   double w, double h );
   void draw_background_tiled( int back, double x, double y );
   void draw_background_part( int back, int left, int top, int width,
@@ -59,7 +59,7 @@ namespace gm {
                             double xscale, double yscale, double rot,
                             int c1, int c2, int c3, int c4,
                             double alpha );
-  
+
   void draw_background_ext( int back, double x, double y, double xscale,
                             double yscale, double rot, int color,
                             double alpha );
@@ -80,7 +80,7 @@ namespace gm {
                                 double alpha );
   void draw_clear( int col );
   void draw_clear_alpha( int col, double alpha );
-  
+
   void draw_point( double x, double y );
   void draw_line( double x1, double y1, double x2, double y2 );
   void draw_line_width( double x1, double y1, double x2, double y2,
@@ -97,7 +97,7 @@ namespace gm {
   void draw_set_circle_precision( int precision );
   void draw_arrow( double x1, double y1, double x2, double y2,
                    int size );
-  
+
   void draw_button( double x1, double y1, double x2, double y2,
                     bool up );
   void draw_path( int path, double x, double y, bool absolute );
@@ -105,7 +105,7 @@ namespace gm {
                        double amount, int backcol, int mincol,
                        int maxcol, double direction, bool showback,
                        bool showborder );
-  
+
   void draw_set_color( int col );
   void draw_set_alpha( double alpha );
   int draw_get_color();
@@ -140,13 +140,13 @@ namespace gm {
   double string_width_ext( const CGMVariable& string, double sep, double w );
   double string_height_ext( const CGMVariable& string, double sep, double w );
 
-  void draw_text_transformed( double x, double y, const CGMVariable& string, 
+  void draw_text_transformed( double x, double y, const CGMVariable& string,
                               double xscale, double yscale, double angle );
   void draw_text_ext_transformed( double x, double y, const CGMVariable& string,
                                   double sep, double w, double xscale,
                                   double yscale, double angle );
   void draw_text_color( double x, double y, const CGMVariable& string,
-                        int c1, int c2, int c3, int c4, 
+                        int c1, int c2, int c3, int c4,
                         double alpha );
   void draw_text_ext_color( double x, double y, const CGMVariable& string,
                             double sep, double w, int c1, int c2,
@@ -155,13 +155,13 @@ namespace gm {
                                     double xscale, double yscale, double angle,
                                     int c1, int c2, int c3, int c4,
                                     double alpha );
-  void draw_text_ext_transformed_color( double x, double y, 
+  void draw_text_ext_transformed_color( double x, double y,
                                         const CGMVariable& string, double sep,
                                         double w, double xscale,
                                         double yscale, double angle, int c1,
                                         int c2, int c3, int c4,
                                         double alpha );
-  
+
   void draw_point_color( double x, double y, int col1 );
   void draw_line_color( double x1, double y1, double x2, double y2,
                         int col1, int col2 );
@@ -179,7 +179,7 @@ namespace gm {
                           int col2, bool outline );
   void draw_ellipse_color( double x1, double y1, double x2, double y2,
                            int col1, int col2, bool outline );
-  
+
   void draw_primitive_begin( int kind );
   void draw_vertex( double x, double y );
   void draw_vertex_color( double x, double y, int col, double alpha );
@@ -187,7 +187,7 @@ namespace gm {
 
   int sprite_get_texture( int spr, int subimg );
   int background_get_texture( int back );
-  
+
   void texture_preload( int texid );
   void texture_set_priority( int texid, int prio );
   int texture_get_width( int texid );
@@ -203,7 +203,7 @@ namespace gm {
   void texture_set_repeat( double repeat );
   void draw_set_blend_mode( int mode );
   void draw_set_blend_mode_ext( int src, int dest );
-  
+
   int surface_create( int w, int h );
   void surface_free( int id );
   bool surface_exists( int id );
@@ -216,7 +216,7 @@ namespace gm {
   void surface_save( int id, const CGMVariable& fname );
   void surface_save_part( int id, const CGMVariable& fname, int x, int y,
                           int w, int h );
-  
+
   void draw_surface( int id, double x, double y );
   void draw_surface_stretched( int id, double x, double y, double w,
                                double h );
@@ -231,20 +231,20 @@ namespace gm {
   void draw_surface_tiled_ext( int id, double x, double y, double xscale,
                                double yscale, int color, double alpha );
   void draw_surface_part_ext( int id, int left, int top, int width,
-                              int height, double x, double y, 
+                              int height, double x, double y,
                               double xscale, double yscale, int color,
                               double alpha );
   void draw_surface_general( int id, int left, int top, int width,
-                             int height, double x, double y, 
+                             int height, double x, double y,
                              double xscale, double yscale, double rot,
                              int c1, int c2, int c3, int c4,
                              double alpha );
-  
+
   void surface_copy( int destination, double x, double y, int source );
-  void surface_copy_part( int destination, double x, double y, 
+  void surface_copy_part( int destination, double x, double y,
                           int source, double xs, double ys, double ws,
                           double hs );
-  
+
   int tile_add( int background, int left, int top, int width,
                 int height, double x, double y, int depth );
   void tile_delete( int id );

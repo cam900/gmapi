@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  Gmapi3DGraphics.cpp
-  - Wrapped GM functions; Parser-generated code
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  Gmapi3DGraphics.cpp                                                 */
+/*   - Wrapped GM functions; Parser-generated code                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #include "Gmapi3DGraphics.h"
 #include "GmapiMacros.h"
@@ -104,7 +104,7 @@ namespace gm {
 
   void d3d_draw_cylinder( double x1, double y1, double z1, double x2,
                           double y2, double z2, int texid,
-                          double hrepeat, double vrepeat, bool closed, 
+                          double hrepeat, double vrepeat, bool closed,
                           int steps ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ x1, y1, z1, x2, y2, z2, texid, hrepeat, vrepeat, closed, steps };
@@ -149,7 +149,7 @@ namespace gm {
   }
 
   void d3d_set_projection( double xfrom, double yfrom, double zfrom,
-                           double xto, double yto, double zto, 
+                           double xto, double yto, double zto,
                            double xup, double yup, double zup ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ xfrom, yfrom, zfrom, xto, yto, zto, xup, yup, zup };
@@ -160,7 +160,7 @@ namespace gm {
   void d3d_set_projection_ext( double xfrom, double yfrom, double zfrom,
                                double xto, double yto, double zto,
                                double xup, double yup, double zup,
-                               double angle, double aspect, double znear, 
+                               double angle, double aspect, double znear,
                                double zfar ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ xfrom, yfrom, zfrom, xto, yto, zto, xup, yup, zup, angle, aspect, znear, zfar };
@@ -176,7 +176,7 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_set_projection_ortho );
   }
 
-  void d3d_set_projection_perspective( double x, double y, double w, 
+  void d3d_set_projection_perspective( double x, double y, double w,
                                        double h, double angle ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ x, y, w, h, angle };
@@ -268,7 +268,7 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_transform_add_rotation_z );
   }
 
-  void d3d_transform_add_rotation_axis( double xa, double ya, double za, 
+  void d3d_transform_add_rotation_axis( double xa, double ya, double za,
                                         double angle ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ xa, ya, za, angle };
@@ -369,8 +369,8 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_vertex_normal );
   }
 
-  void d3d_vertex_normal_color( double x, double y, double z, 
-                                double nx, double ny, double nz, 
+  void d3d_vertex_normal_color( double x, double y, double z,
+                                double nx, double ny, double nz,
                                 int col, double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ x, y, z, nx, ny, nz, col, alpha };
@@ -379,7 +379,7 @@ namespace gm {
   }
 
   void d3d_vertex_normal_texture( double x, double y, double z,
-                                  double nx, double ny, double nz, 
+                                  double nx, double ny, double nz,
                                   double xtex, double ytex ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ x, y, z, nx, ny, nz, xtex, ytex };
@@ -388,8 +388,8 @@ namespace gm {
   }
 
   void d3d_vertex_normal_texture_color( double x, double y, double z,
-                                        double nx, double ny, double nz, 
-                                        double xtex, double ytex, int col, 
+                                        double nx, double ny, double nz,
+                                        double xtex, double ytex, int col,
                                         double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ x, y, z, nx, ny, nz, xtex, ytex, col, alpha };
@@ -471,7 +471,7 @@ namespace gm {
   }
 
   void d3d_model_vertex_texture_color( int ind, double x, double y,
-                                       double z, double xtex, double ytex, 
+                                       double z, double xtex, double ytex,
                                        int col, double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ ind, x, y, z, xtex, ytex, col, alpha };
@@ -479,7 +479,7 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_model_vertex_texture_color );
   }
 
-  void d3d_model_vertex_normal( int ind, double x, double y, double z, 
+  void d3d_model_vertex_normal( int ind, double x, double y, double z,
                                 double nx, double ny, double nz ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ ind, x, y, z, nx, ny, nz };
@@ -487,8 +487,8 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_model_vertex_normal );
   }
 
-  void d3d_model_vertex_normal_color( int ind, double x, double y, 
-                                      double z, double nx, double ny, 
+  void d3d_model_vertex_normal_color( int ind, double x, double y,
+                                      double z, double nx, double ny,
                                       double nz, int col, double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ ind, x, y, z, nx, ny, nz, col, alpha };
@@ -496,7 +496,7 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_model_vertex_normal_color );
   }
 
-  void d3d_model_vertex_normal_texture( int ind, double x, double y, 
+  void d3d_model_vertex_normal_texture( int ind, double x, double y,
                                         double z, double nx, double ny,
                                         double nz, double xtex, double ytex ) {
     GM_NORMAL_RESULT;
@@ -508,7 +508,7 @@ namespace gm {
   void d3d_model_vertex_normal_texture_color( int ind, double x, double y,
                                               double z, double nx, double ny,
                                               double nz, double xtex,
-                                              double ytex, int col, 
+                                              double ytex, int col,
                                               double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ ind, x, y, z, nx, ny, nz, xtex, ytex, col, alpha };
@@ -533,7 +533,7 @@ namespace gm {
   }
 
   void d3d_model_cylinder( int ind, double x1, double y1, double z1,
-                           double x2, double y2, double z2, 
+                           double x2, double y2, double z2,
                            double hrepeat, double vrepeat, bool closed,
                            int steps ) {
     GM_NORMAL_RESULT;
@@ -542,7 +542,7 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_model_cylinder );
   }
 
-  void d3d_model_cone( int ind, double x1, double y1, double z1, 
+  void d3d_model_cone( int ind, double x1, double y1, double z1,
                        double x2, double y2, double z2, double hrepeat,
                        double vrepeat, bool closed, int steps ) {
     GM_NORMAL_RESULT;
@@ -551,7 +551,7 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_model_cone );
   }
 
-  void d3d_model_ellipsoid( int ind, double x1, double y1, double z1, 
+  void d3d_model_ellipsoid( int ind, double x1, double y1, double z1,
                             double x2, double y2, double z2,
                             double hrepeat, double vrepeat, int steps ) {
     GM_NORMAL_RESULT;

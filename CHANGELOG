@@ -1,3 +1,7 @@
+V0.6.1 (14, Feb 2010)
+  - Add compatibility with the MinGW compiler
+  - Fixed bug in IFonts interface
+
 V0.6 (30, Jan 2010)
   - The library is now GM8 compatible
   - Added GM8 functions and constants

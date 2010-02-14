@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiGameGraphics.cpp
-  - Wrapped GM functions; Parser-generated code
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiGameGraphics.cpp                                               */
+/*   - Wrapped GM functions; Parser-generated code                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #include "GmapiGameGraphics.h"
 #include "GmapiMacros.h"
@@ -167,8 +167,8 @@ namespace gm {
   }
 
   void draw_background_part_ext( int back, int left, int top, int width,
-                                 int height, double x, double y, 
-                                 double xscale, double yscale, int color, 
+                                 int height, double x, double y,
+                                 double xscale, double yscale, int color,
                                  double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ back, left, top, width, height, x, y, xscale, yscale, color, alpha };
@@ -457,7 +457,7 @@ namespace gm {
 
   void draw_text_ext( double x, double y, const CGMVariable& string,
                       double sep, int w ) {
-    GM_NORMAL_RESULT;   
+    GM_NORMAL_RESULT;
     GM_ARGS{ x, y, string, sep, w };
 
     GM_NORMAL_CALL( id_draw_text_ext );
@@ -522,7 +522,7 @@ namespace gm {
   }
 
   void draw_text_ext_color( double x, double y, const CGMVariable& string,
-                            double sep, double w, int c1, int c2, 
+                            double sep, double w, int c1, int c2,
                             int c3, int c4, double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ x, y, string, sep, w, c1, c2, c3, c4, alpha };
@@ -601,7 +601,7 @@ namespace gm {
     GM_NORMAL_CALL( id_draw_triangle_color );
   }
 
-  void draw_circle_color( double x, double y, double r, int col1, 
+  void draw_circle_color( double x, double y, double r, int col1,
                           int col2, bool outline ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ x, y, r, col1, col2, outline };
@@ -705,7 +705,7 @@ namespace gm {
     GM_NORMAL_CALL( id_draw_vertex_texture );
   }
 
-  void draw_vertex_texture_color( double x, double y, double xtex, 
+  void draw_vertex_texture_color( double x, double y, double xtex,
                                   double ytex, int col, double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ x, y, xtex, ytex, col, alpha };
@@ -886,9 +886,9 @@ namespace gm {
     GM_NORMAL_CALL( id_draw_surface_tiled_ext );
   }
 
-  void draw_surface_part_ext( int id, int left, int top, int width, 
+  void draw_surface_part_ext( int id, int left, int top, int width,
                               int height, double x, double y,
-                              double xscale, double yscale, int color, 
+                              double xscale, double yscale, int color,
                               double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ id, left, top, width, height, x, y, xscale, yscale, color, alpha };
@@ -899,7 +899,7 @@ namespace gm {
   void draw_surface_general( int id, int left, int top, int width,
                              int height, double x, double y,
                              double xscale, double yscale, double rot,
-                             int c1, int c2, int c3, int c4, 
+                             int c1, int c2, int c3, int c4,
                              double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ id, left, top, width, height, x, y, xscale, yscale, rot, c1, c2, c3, c4, alpha };
@@ -914,7 +914,7 @@ namespace gm {
     GM_NORMAL_CALL( id_surface_copy );
   }
 
-  void surface_copy_part( int destination, double x, double y, 
+  void surface_copy_part( int destination, double x, double y,
                           int source, double xs, double ys, double ws,
                           double hs ) {
     GM_NORMAL_RESULT;

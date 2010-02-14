@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiResources.h
-  - Wrapped GM functions; Parser-generated code
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiSounds.h                                                       */
+/*   - Wrapped GM functions; Parser-generated code                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #pragma once
 #include "GmapiInternal.h"
@@ -49,11 +49,11 @@ namespace gm {
                             int delay, double phase );
   void sound_effect_echo( int snd, double wetdry, double feedback,
                           int leftdelay, int rightdelay, bool pandelay );
-  void sound_effect_flanger( int snd, double wetdry, double depth, 
+  void sound_effect_flanger( int snd, double wetdry, double depth,
                              double feedback, double frequency, int wave,
                              int delay, double phase );
   void sound_effect_gargle( int snd, double rate, int wave );
-  void sound_effect_reverb( int snd, double gain, double mix, 
+  void sound_effect_reverb( int snd, double gain, double mix,
                             double time, double ratio );
   void sound_effect_compressor( int snd, double gain, double attack,
                                 double release, double threshold,
@@ -66,7 +66,7 @@ namespace gm {
   void sound_3d_set_sound_velocity( int snd, double x, double y,
                                     double z );
   void sound_3d_set_sound_distance( int snd, double mindist, double maxdist );
-  void sound_3d_set_sound_cone( int snd, double x, double y, 
+  void sound_3d_set_sound_cone( int snd, double x, double y,
                                 double z, double anglein, double angleout,
                                 double voloutside );
 

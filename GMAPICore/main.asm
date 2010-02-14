@@ -1,25 +1,27 @@
-;************************************************************************** 
-;  LICENSE:
-;
-;    GMAPI is free software; you can redistribute it and/or
-;    modify it under the terms of the GNU Lesser General Public
-;    License as published by the Free Software Foundation; either
-;    version 2.1 of the License, or (at your option) any later version.
-;
-;    GMAPI is distributed in the hope that it will be useful,
-;    but WITHOUT ANY WARRANTY; without even the implied warranty of
-;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-;    Lesser General Public License for more details.
-;
-;    You should have received a copy of the GNU Lesser General Public
-;    License along with GMAPI; if not, write to the Free Software
-;    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-;    02110-1301 USA
-;***************************************************************************
-; main.asm
-;
-; Copyright 2009-2010 (C) Snake (http://sgames.ovh.org/)
-;***************************************************************************
+; ******************************************************************************
+; * LICENSE:                                                                   *
+; *                                                                            *
+; *   GMAPI is free software; you can redistribute it and/or                   *
+; *   modify it under the terms of the GNU Lesser General Public               *
+; *   License as published by the Free Software Foundation; either             *
+; *   version 2.1 of the License, or (at your option) any later version.       *
+; *                                                                            *
+; *   GMAPI is distributed in the hope that it will be useful,                 *
+; *   but WITHOUT ANY WARRANTY; without even the implied warranty of           *
+; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU        *
+; *   Lesser General Public License for more details.                          *
+; *                                                                            *
+; *   You should have received a copy of the GNU Lesser General Public         *
+; *   License along with GMAPI; if not, write to the Free Software             *
+; *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA            *
+; *   02110-1301 USA                                                           *
+; ******************************************************************************
+
+; ******************************************************************************
+; * main.asm                                                                   *
+; *                                                                            *
+; * Copyright 2009-2010 (C) Snake (http://sgames.ovh.org/)                     *
+; ******************************************************************************
 
 .386
 .model flat, stdcall
@@ -36,6 +38,7 @@ GMAPI_DATA struct ; GMAPI_HOOK_DATA_BASE constant points to that structure, it i
   selfInstance   DWORD ?
   otherInstance  DWORD ?
   returnAddress  DWORD ?
+  hookAddress    DWORD ?
 GMAPI_DATA ends
 
 GMAPI_HOOK_DATA_BASE                 equ 00400800h
@@ -333,6 +336,9 @@ GMAPIHookInstall proc uses ecx esi edi
   call   [VirtualProtect]
 
   pop    eax
+  
+  ; Set jmp destination for the hook
+  mov    dword ptr ds:[00400810h], 00400900h
 
   ; Save original external_call code
   cld
@@ -353,9 +359,9 @@ GMAPIHookInstall proc uses ecx esi edi
   mov    edi, GMAPI_HOOK_DATA_CODE
   rep movsb
   
-  ; Modify "sub esp, BAADC0DE" opcode
+  ; Modify "sub esp, BAADC0DE" instruction
   push   EXTERNAL_CALL_LOCALSPACE
-  pop    dword ptr ds:[GMAPI_HOOK_DATA_CODE + 08h]
+  pop    dword ptr ds:[GMAPI_HOOK_DATA_CODE + 05h]
   
   ; Set return address
   push   RUNNER_ADDR_EXTERNALCALL_RETURN
@@ -375,13 +381,9 @@ ProcExit:
   ; *********************************************************************
   
   HookDetour:
-    push  GMAPI_HOOK_DATA_CODE
-    jmp   dword ptr ds:[esp]   ; jump to absolute address :F
+    jmp   dword ptr ds:[00400810h]
 
   HookCode:
-    add    esp, 4
-  
-    ; Stack frame
     push   ebp
     mov    ebp, esp
     sub    esp, 0BAADC0DEh
@@ -423,7 +425,7 @@ GMAPIHookUninstall proc uses ecx
     call   FlushCache
 
 ProcExit:
-  jns    Return   ; if reference count is negative
+  jns    Return   ; if reference counter is negative
     inc    dword ptr ds:[GMAPI_HOOK_DATA_BASE]
   
 Return:

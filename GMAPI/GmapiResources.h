@@ -1,28 +1,28 @@
-/************************************************************************** 
-  LICENSE:
+/************************************************************************/
+/* LICENSE:                                                             */
+/*                                                                      */
+/*  GMAPI is free software; you can redistribute it and/or              */
+/*  modify it under the terms of the GNU Lesser General Public          */
+/*  License as published by the Free Software Foundation; either        */
+/*  version 2.1 of the License, or (at your option) any later version.  */
+/*                                                                      */
+/*  GMAPI is distributed in the hope that it will be useful,            */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU   */
+/*  Lesser General Public License for more details.                     */
+/*                                                                      */
+/*  You should have received a copy of the GNU Lesser General Public    */
+/*  License along with GMAPI; if not, write to the Free Software        */
+/*  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA       */
+/*  02110-1301 USA                                                      */
+/************************************************************************/
 
-    GMAPI is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    GMAPI is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with GMAPI; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301 USA
-***************************************************************************/
-
-/*************************************************************************
-  GmapiResources.h
-  - Wrapped GM functions; Parser-generated code
-
-  Copyright 2009-2010 (C) Snake (http://www.sgames.ovh.org)
-***************************************************************************/
+/************************************************************************/
+/*  GmapiResources.h                                                    */
+/*   - Wrapped GM functions; Parser-generated code                      */
+/*                                                                      */
+/*  Copyright (C) 2009-2010, Snake (http://www.sgames.ovh.org)          */
+/************************************************************************/
 
 #pragma once
 #include "GmapiInternal.h"
@@ -33,9 +33,9 @@ namespace gm {
   CGMVariable execute_string( const CGMVariable& str, const CGMVariable* aArguments = NULL,
                               int aArgCount = 0 );
   CGMVariable execute_file( const CGMVariable& fname, const CGMVariable* aArguments = NULL,
-                             int aArgCount = 0 ); 
+                             int aArgCount = 0 );
 
-  int external_define( const CGMVariable& dll, const CGMVariable& name, int calltype, 
+  int external_define( const CGMVariable& dll, const CGMVariable& name, int calltype,
                        int restype, int argnumb, const int* aArgTypes );
   CGMVariable external_call( int id, const CGMVariable* aArguments, int aArgCount );
   void external_free( const CGMVariable& dll );
@@ -122,7 +122,7 @@ namespace gm {
                               int bbbottom, int kind, int tolerance );
 
   int sound_add( const CGMVariable& fname, int kind, bool preload );
-  void sound_replace( int index, const CGMVariable& fname, int kind, 
+  void sound_replace( int index, const CGMVariable& fname, int kind,
                       bool preload );
   void sound_delete( int index );
 
@@ -142,7 +142,7 @@ namespace gm {
   /// GM6/GM7 version
   void background_replace( int ind, const CGMVariable& fname, bool transparent,
                            bool smooth, bool preload );
-  
+
   /// GM8 version
   void background_replace( int ind, const CGMVariable& fname, bool removeback,
                            bool smooth );
@@ -166,7 +166,7 @@ namespace gm {
 
   /// GM6/GM7 version
   int background_create_from_screen( int x, int y, int w, int h,
-                                     bool transparent, bool smooth, 
+                                     bool transparent, bool smooth,
                                      bool preload );
   /// GM8 version
   int background_create_from_screen( int x, int y, int w, int h,
@@ -187,7 +187,7 @@ namespace gm {
   int font_add( const CGMVariable& name, int size, bool bold, bool italic,
                 int first, int last );
   int font_add_sprite( int spr, int first, bool prop, int sep );
-  void font_replace( int ind, const CGMVariable& name, int size, bool bold, 
+  void font_replace( int ind, const CGMVariable& name, int size, bool bold,
                      bool italic, int first, int last );
   void font_replace_sprite( int ind, int spr, int first, bool prop,
                             int sep );
@@ -230,7 +230,7 @@ namespace gm {
   void object_set_parent( int ind, int obj );
   int object_add();
   void object_delete( int ind );
-  void object_event_add( int ind, int evtype, int evnumb, 
+  void object_event_add( int ind, int evtype, int evnumb,
                          const CGMVariable& codestr );
   void object_event_clear( int ind, int evtype, int evnumb );
 
@@ -255,11 +255,11 @@ namespace gm {
   void room_assign( int ind, int room );
   int room_instance_add( int ind, double x, double y, int obj );
   void room_instance_clear( int ind );
-  int room_tile_add( int ind, int back, int left, int top, 
+  int room_tile_add( int ind, int back, int left, int top,
                      int width, int height, double x, double y,
                      int depth );
   int room_tile_add_ext( int ind, int back, int left, int top,
-                         int width, int height, double x, double y, 
+                         int width, int height, double x, double y,
                          int depth, double xscale, double yscale,
                          double alpha );
   void room_tile_clear( int ind );
