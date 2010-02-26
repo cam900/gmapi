@@ -49,7 +49,6 @@ namespace gm {
         return m_alternativeStructures;
       }
 
-
     private:
       static inline PGMVARIABLELIST InstanceVarList( PGMINSTANCE aInstance );
       static inline int InstanceID( PGMINSTANCE aInstance );
@@ -72,6 +71,11 @@ namespace gm {
   ///
   class CGMVariable {
     public:
+      ~CGMVariable() {
+        if ( m_isString && m_stringPtr && m_stringDispose )
+          StringDeallocate();
+      }
+
       /// Ctor( int aValue ) [default]
       ///   Initializes the variable to specified int value
       ///   (it will be casted to double) and sets its type
@@ -96,6 +100,19 @@ namespace gm {
                                     m_stringDispose( true ),
                                     m_stringPtr( NULL ),
                                     m_real( aValue ) {}
+
+      /// Ctor( bool aValue )
+      ///   Initializes the variable to specified bool value
+      ///   (it will be casted to double) and sets its type
+      ///   to "real".
+      ///
+      /// Parameters:
+      ///   aValue: Initializing value.
+      ///
+      CGMVariable( bool aValue ): m_isString( false ),
+                                  m_stringDispose( true ),
+                                  m_stringPtr( NULL ),
+                                  m_real( aValue ) {}
 
       /// Ctor( const char* aValue )
       ///   Initializes the variable with specified string
@@ -134,7 +151,7 @@ namespace gm {
       ///
       CGMVariable( const GMVALUE& aValue );
 
-      /// CGMVariable( const CGMVariable& aValue )
+      /// Ctor( const CGMVariable& aValue )
       ///   Copy constructor. Initializes the object basing
       ///   on an existing class instance.
       ///
@@ -145,24 +162,22 @@ namespace gm {
         *this = aValue;
       }
 
-      /// CGMVariable( bool aDeallocateString )
-      /// Used internally. Initializes the object that
-      /// will not deallocate the string on destruction.
+      /// Set( bool aValue )
+      ///   Sets the variable to specified value of type "bool", thus,
+      ///   changing its type to "real". If the variable was previously
+      ///   of a "string" type - the string will be deallocated.
       ///
-      CGMVariable( bool aDeallocateString ): m_isString( true ),
-                                             m_stringDispose( aDeallocateString ),
-                                             m_stringPtr( NULL ),
-                                             m_real( 0.0 ) {}
-
-      ~CGMVariable() {
-        if ( m_isString && m_stringPtr && m_stringDispose )
-          StringDeallocate();
+      /// Parameters:
+      ///   aValue: New value
+      ///
+      void Set( bool aValue ) {
+        Set( (double) aValue );
       }
 
       /// Set( double aValue )
       ///   Sets the variable to specified value of type "double", thus,
       ///   changing its type to "real". If the variable was previously
-      ///   a "string" type - the string will be deallocated.
+      ///   of a "string" type - the string will be deallocated.
       ///
       /// Parameters:
       ///   aValue: New value
@@ -178,7 +193,7 @@ namespace gm {
 
       /// Set( const char* aString )
       ///   Sets variable to specified string. Thus, changing its type
-      ///   to "string". If previously variable was "real" type - it'll
+      ///   to "string". If previously variable was of "real" type - it'll
       ///   be set to zero.
       ///
       /// Parameters:
@@ -196,9 +211,9 @@ namespace gm {
           StringClear();
       }
 
-      /// void Set( const std::string& aValue )
+      /// Set( const std::string& aValue )
       ///   Sets variable to specified string. Thus, changing its type
-      ///   to "string". If previously variable was "real" type - it'll
+      ///   to "string". If previously variable was of "real" type - it'll
       ///   be set to zero.
       ///
       /// Parameters:
@@ -211,22 +226,21 @@ namespace gm {
       /// c_str()
       ///   Returns variable as C-style string.
       ///
-      /// Parameters:
-      ///   None
-      ///
       /// Returns:
       ///   C-style string if variable's type is string, otherwise NULL.
-      ///   Also returns NULL if the string is empty.
       ///
       const char* c_str() const {
-        return ( m_stringPtr && m_isString ? *m_stringPtr : NULL );
+        if ( m_stringPtr && m_isString )
+          if ( *m_stringPtr )
+            return *m_stringPtr;
+          else
+            return "\xFF\xFF\xFF\xFF\x00\x00\x00\x00" + 8;
+        else
+          return NULL;
       }
 
       /// real()
-      ///   Returns variable as real value.
-      ///
-      /// Parameters:
-      ///   None
+      ///   Returns variable as a real value.
       ///
       /// Returns:
       ///   Real value of the variable.
@@ -234,7 +248,6 @@ namespace gm {
       double real() const {
         return m_real;
       }
-
 
       /// RealToString( double aValue )
       ///   Sets the variable to string by converting specifed
@@ -305,6 +318,11 @@ namespace gm {
       /************************************************************************/
       /* Assignment operator overloading                                      */
       /************************************************************************/
+
+      CGMVariable& operator=( bool aValue ) {
+        Set( aValue );
+        return *this;
+      }
 
       CGMVariable& operator=( double aValue ) {
         Set( aValue );

@@ -87,7 +87,7 @@ namespace gm {
   void ds_map_add( int id, const CGMVariable& key, const CGMVariable& val );
   void ds_map_replace( int id, const CGMVariable& key, const CGMVariable& val );
   void ds_map_delete( int id, const CGMVariable& key );
-  void ds_map_exists( int id, const CGMVariable& key );
+  bool ds_map_exists( int id, const CGMVariable& key );
   CGMVariable ds_map_find_value( int id, const CGMVariable& key );
   CGMVariable ds_map_find_previous( int id, const CGMVariable& key );
   CGMVariable ds_map_find_next( int id, const CGMVariable& key );
@@ -171,7 +171,7 @@ namespace gm {
   int ds_grid_value_disk_y( int id, int xm, int ym, int r,
                             const CGMVariable& val );
   void ds_grid_shuffle( int id );
-  void ds_grid_write( int id );
+  CGMVariable ds_grid_write( int id );
   void ds_grid_read( int id, const CGMVariable& str );
 
 }

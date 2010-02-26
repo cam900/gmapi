@@ -504,6 +504,15 @@ namespace gm {
     GM_RETURN_INT;
   }
 
+
+  int part_deflector_create( int ps ) {
+    GM_NORMAL_RESULT;
+    GM_ARGS{ ps };
+
+    GM_NORMAL_CALL( id_part_deflector_create );
+    GM_RETURN_INT;
+  }
+
   void part_deflector_destroy( int ps, int ind ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ ps, ind };

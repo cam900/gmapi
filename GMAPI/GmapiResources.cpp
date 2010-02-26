@@ -1318,12 +1318,12 @@ namespace gm {
     GM_RETURN_BOOL;
   }
 
-  bool path_get_precision( int ind ) {
+  int path_get_precision( int ind ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ ind };
 
     GM_NORMAL_CALL( id_path_get_precision );
-    GM_RETURN_BOOL;
+    GM_RETURN_INT;
   }
 
   int path_get_number( int ind ) {

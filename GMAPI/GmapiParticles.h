@@ -110,6 +110,7 @@ namespace gm {
   void part_destroyer_clear( int ps, int ind );
   int part_destroyer_region( int ps, int ind, double xmin, double xmax,
                              double ymin, double ymax, int shape );
+  int part_attractor_create( int ps );
   void part_deflector_destroy( int ps, int ind );
   void part_deflector_destroy_all( int ps );
   bool part_deflector_exists( int ps, int ind );

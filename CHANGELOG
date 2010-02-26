@@ -1,5 +1,10 @@
+V0.6.2 (26, Feb 2010)
+  - Added some missing GML functions
+  - Changed CGMVariable boolean constructor so it now sets value of the variable using bool
+  - CGMVariable::c_str now returns empty string instead of NULL when the string is empty
+
 V0.6.1 (14, Feb 2010)
-  - Add compatibility with the MinGW compiler
+  - Added compatibility with the MinGW compiler
   - Fixed bug in IFonts interface
 
 V0.6 (30, Jan 2010)

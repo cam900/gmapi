@@ -312,7 +312,7 @@ namespace gm {
   int path_get_length( int ind );
   int path_get_kind( int ind );
   bool path_get_closed( int ind );
-  bool path_get_precision( int ind );
+  int path_get_precision( int ind );
   int path_get_number( int ind );
   double path_get_point_x( int ind, int n );
   double path_get_point_y( int ind, int n );

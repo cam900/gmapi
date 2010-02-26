@@ -33,58 +33,52 @@ namespace gm {
   bool d3d_end();
   void d3d_set_hidden( bool enable );
   void d3d_set_perspective( bool enable );
+  void d3d_set_culling( bool enable );
   void d3d_set_depth( int depth );
   void d3d_primitive_begin( int kind );
   void d3d_vertex( double x, double y, double z );
-  void d3d_vertex_color( double x, double y, double z, int col,
-                         double alpha );
+  void d3d_vertex_color( double x, double y, double z, int col, double alpha );
   void d3d_primitive_end();
-  void d3d_draw_block( double x1, double y1, double z1, double x2,
-                       double y2, double z2, int texid, double hrepeat,
-                       double vrepeat );
-  void d3d_draw_cylinder( double x1, double y1, double z1, double x2,
-                          double y2, double z2, int texid,
-                          double hrepeat, double vrepeat, bool closed,
-                          int steps );
-  void d3d_draw_cone( double x1, double y1, double z1, double x2,
-                      double y2, double z2, int texid, double hrepeat,
-                      double vrepeat, bool closed, int steps );
-  void d3d_draw_ellipsoid( double x1, double y1, double z1, double x2,
-                           double y2, double z2, int texid,
-                           double hrepeat, double vrepeat, int steps );
-  void d3d_draw_wall( double x1, double y1, double z1, double x2,
-                      double y2, double z2, int texid, double hrepeat,
-                      double vrepeat );
-  void d3d_draw_floor( double x1, double y1, double z1, double x2,
-                       double y2, double z2, int texid, double hrepeat,
-                       double vrepeat );
-  void d3d_set_projection( double xfrom, double yfrom, double zfrom,
-                           double xto, double yto, double zto,
-                           double xup, double yup, double zup );
-  void d3d_set_projection_ext( double xfrom, double yfrom, double zfrom,
-                               double xto, double yto, double zto,
-                               double xup, double yup, double zup,
-                               double angle, double aspect, double znear,
-                               double zfar );
-  void d3d_set_projection_ortho( double x, double y, double w, double h,
-                                 double angle );
-  void d3d_set_projection_perspective( double x, double y, double w,
-                                       double h, double angle );
+  void d3d_primitive_begin_texture( int kind, int texid );
+  void d3d_vertex_texture( double x, double y, double z, double xtex, double ytex );
+  void d3d_vertex_texture_color( double x, double y, double z,  double xtex, double ytex,
+                                 int col, double alpha );
+
+  void d3d_draw_block( double x1, double y1, double z1, double x2, double y2, double z2, 
+                       int texid, double hrepeat, double vrepeat );
+  void d3d_draw_cylinder( double x1, double y1, double z1, double x2, double y2,
+                          double z2, int texid, double hrepeat, double vrepeat,
+                          bool closed, int steps );
+  void d3d_draw_cone( double x1, double y1, double z1, double x2, double y2, double z2,
+                      int texid, double hrepeat, double vrepeat, bool closed, int steps );
+  void d3d_draw_ellipsoid( double x1, double y1, double z1, double x2, double y2, 
+                           double z2, int texid, double hrepeat, double vrepeat,
+                           int steps );
+  void d3d_draw_wall( double x1, double y1, double z1, double x2, double y2, double z2,
+                      int texid, double hrepeat, double vrepeat );
+  void d3d_draw_floor( double x1, double y1, double z1, double x2, double y2, double z2,
+                       int texid, double hrepeat, double vrepeat );
+  void d3d_set_projection( double xfrom, double yfrom, double zfrom, double xto, 
+                           double yto, double zto, double xup, double yup, double zup );
+  void d3d_set_projection_ext( double xfrom, double yfrom, double zfrom, double xto, 
+                               double yto, double zto, double xup, double yup, double zup,
+                               double angle, double aspect, double znear, double zfar );
+  void d3d_set_projection_ortho( double x, double y, double w, double h, double angle );
+  void d3d_set_projection_perspective( double x, double y, double w, double h,
+                                       double angle );
   void d3d_transform_set_identity();
   void d3d_transform_set_translation( double xt, double yt, double zt );
   void d3d_transform_set_scaling( double xs, double ys, double zs );
   void d3d_transform_set_rotation_x( double angle );
   void d3d_transform_set_rotation_y( double angle );
   void d3d_transform_set_rotation_z( double angle );
-  void d3d_transform_set_rotation_axis( double xa, double ya, double za,
-                                        double angle );
+  void d3d_transform_set_rotation_axis( double xa, double ya, double za, double angle );
   void d3d_transform_add_translation( double xt, double yt, double zt );
   void d3d_transform_add_scaling( double xs, double ys, double zs );
   void d3d_transform_add_rotation_x( double angle );
   void d3d_transform_add_rotation_y( double angle );
   void d3d_transform_add_rotation_z( double angle );
-  void d3d_transform_add_rotation_axis( double xa, double ya, double za,
-                                        double angle );
+  void d3d_transform_add_rotation_axis( double xa, double ya, double za, double angle );
   void d3d_transform_stack_clear();
   bool d3d_transform_stack_empty();
   bool d3d_transform_stack_push();

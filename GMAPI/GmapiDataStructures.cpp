@@ -387,11 +387,12 @@ namespace gm {
     GM_NORMAL_CALL( id_ds_map_delete );
   }
 
-  void ds_map_exists( int id, const CGMVariable& key ) {
+  bool ds_map_exists( int id, const CGMVariable& key ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ id, key };
 
     GM_NORMAL_CALL( id_ds_map_exists );
+    GM_RETURN_BOOL;
   }
 
   CGMVariable ds_map_find_value( int id, const CGMVariable& key ) {
@@ -861,11 +862,12 @@ namespace gm {
     GM_NORMAL_CALL( id_ds_grid_shuffle );
   }
 
-  void ds_grid_write( int id ) {
-    GM_NORMAL_RESULT;
+  CGMVariable ds_grid_write( int id ) {
+    GM_VAR_RESULT;
     GM_ARGS{ id };
 
     GM_NORMAL_CALL( id_ds_grid_write );
+    GM_RETURN_VAR;
   }
 
   void ds_grid_read( int id, const CGMVariable& str ) {

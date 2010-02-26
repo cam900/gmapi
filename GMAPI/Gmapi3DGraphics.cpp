@@ -58,6 +58,13 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_set_perspective );
   }
 
+  void d3d_set_culling( bool enable ) {
+    GM_NORMAL_RESULT;
+    GM_ARGS{ enable };
+
+    GM_NORMAL_CALL( id_d3d_set_culling );
+  }
+
   void d3d_set_depth( int depth ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ depth };
@@ -79,8 +86,7 @@ namespace gm {
     GM_NORMAL_CALL( id_d3d_vertex );
   }
 
-  void d3d_vertex_color( double x, double y, double z, int col,
-                         double alpha ) {
+  void d3d_vertex_color( double x, double y, double z, int col, double alpha ) {
     GM_NORMAL_RESULT;
     GM_ARGS{ x, y, z, col, alpha };
 
@@ -91,6 +97,28 @@ namespace gm {
     GM_NORMAL_RESULT;
 
     GM_VOID_CALL( id_d3d_primitive_end );
+  }
+
+  void d3d_primitive_begin_texture( int kind, int texid ) {
+    GM_NORMAL_RESULT;
+    GM_ARGS{ kind, texid };
+
+    GM_NORMAL_CALL( id_d3d_primitive_begin_texture );
+  }
+
+  void d3d_vertex_texture( double x, double y, double z, double xtex, double ytex ) {
+    GM_NORMAL_RESULT;
+    GM_ARGS{ x, y, z, xtex, ytex };
+
+    GM_NORMAL_CALL( id_d3d_vertex_texture );
+  }
+
+  void d3d_vertex_texture_color( double x, double y, double z, double xtex, double ytex,
+                                 int col, double alpha ) {
+    GM_NORMAL_RESULT;
+    GM_ARGS{ x, y, z, xtex, ytex, col, alpha };
+
+    GM_NORMAL_CALL( id_d3d_vertex_texture_color );
   }
 
   void d3d_draw_block( double x1, double y1, double z1, double x2,
